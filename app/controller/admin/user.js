@@ -4,20 +4,22 @@ const Controller = require('../base_controller');
 
 class UserController extends Controller {
   async search() {
-    const { service, } = this,
-      total = await service.sql.select('user'),
-      list = await service.sql.select({'table': 'user', 'columns': ['id', 'userName', 'avatar', 'status', 'nickName', 'roleId','updateTime', 'remark',],});
-    this.success({'result': {total, list,},});
+    const { ctx, } = this,
+      limit = Number(ctx.request.body.limit) || 10,
+      page = Number(ctx.request.body.page) || 1,
+      offset = (page*limit) - limit,
+      query = {
+        'userName': { '$like': `%${ctx.request.body.userName}%`, },
+      },
+      result = await ctx.service.admin.user.search(query, limit, offset);
+    this.success({result, 'type': '查询',});
   }
 
   async add() {
     const { service, ctx,} = this,
       param = {...ctx.request.body,};
-    param.userRegistTime = service.tool.time();
-    param.updateTime = service.tool.time();
-    param.theme = param.theme || '#304156';
-    param.avatar = param.avatar || 'https://raw.githubusercontent.com/SpectreAlan/images/master/blog/logo.png';
-    const result = service.sql.insert({'table': 'user', param,});
+    ctx.logger.info('Controller用户新增参数：%j', param);
+    const result = await service.admin.user.add({param,});
     this.success({result, 'type': '添加',});
   }
 }

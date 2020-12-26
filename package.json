@@ -15,7 +15,8 @@
     "egg-sequelize": "^6.0.0",
     "egg-validate": "^2.0.2",
     "egg-view-nunjucks": "^2.2.0",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "mysql2": "^2.2.5"
   },
   "devDependencies": {
     "autod": "^3.0.1",
@@ -23,6 +24,7 @@
     "egg-bin": "^4.11.0",
     "egg-ci": "^1.11.0",
     "egg-mock": "^3.21.0",
+    "egg-sequelize-auto": "^0.1.1",
     "eslint": "^5.13.0",
     "eslint-config-egg": "^7.1.0",
     "svg-captcha": "^1.4.0"
@@ -40,7 +42,8 @@
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "autod": "autod",
+    "dbload": "egg-sequelize-auto -o ./app/model -h ip -p port -d db_blog -u count -x pwd"
   },
   "ci": {
     "version": "10"

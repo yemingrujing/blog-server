@@ -1,5 +1,7 @@
 'use strict';
 
+const Op = require('sequelize').Op;
+
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
@@ -20,7 +22,7 @@ module.exports = appInfo => {
         '.tpl': 'nunjucks',
       },
     },
-    'sequelize ' : {
+    'sequelize' : {
       'dialect': 'mysql',
       'database': 'db_blog', //数据库名
       'host': '',
@@ -28,7 +30,7 @@ module.exports = appInfo => {
       'username': '', //账号
       'password': '', //密码
       'define': { // model的全局配置
-        'timestamps': true, // 添加create,update,delete时间戳
+        'timestamps': false, // 添加create,update,delete时间戳
         'paranoid': true, // 添加软删除
         'freezeTableName': true, // 防止修改表名为复数
         'underscored': false, // 防止驼峰式字段被默认转为下划线
@@ -43,6 +45,43 @@ module.exports = appInfo => {
           return next();
         },
       },
+      'operatorsAliases':{ // 使用默认运算符别名
+        '$eq': Op.eq,
+        '$ne': Op.ne,
+        '$gte': Op.gte,
+        '$gt': Op.gt,
+        '$lte': Op.lte,
+        '$lt': Op.lt,
+        '$not': Op.not,
+        '$in': Op.in,
+        '$notIn': Op.notIn,
+        '$is': Op.is,
+        '$like': Op.like,
+        '$notLike': Op.notLike,
+        '$iLike': Op.iLike,
+        '$notILike': Op.notILike,
+        '$regexp': Op.regexp,
+        '$notRegexp': Op.notRegexp,
+        '$iRegexp': Op.iRegexp,
+        '$notIRegexp': Op.notIRegexp,
+        '$between': Op.between,
+        '$notBetween': Op.notBetween,
+        '$overlap': Op.overlap,
+        '$contains': Op.contains,
+        '$contained': Op.contained,
+        '$adjacent': Op.adjacent,
+        '$strictLeft': Op.strictLeft,
+        '$strictRight': Op.strictRight,
+        '$noExtendRight': Op.noExtendRight,
+        '$noExtendLeft': Op.noExtendLeft,
+        '$and': Op.and,
+        '$or': Op.or,
+        '$any': Op.any,
+        '$all': Op.all,
+        '$values': Op.values,
+        '$col': Op.col,
+      },
+
     },
     // 'middleware': ['authority', 'errorHandler',],
     'validate': {
@@ -59,6 +98,12 @@ module.exports = appInfo => {
     'cors': {
       'origin': '*',
       'allowMethods': 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+    },
+    'logger': {
+      'level': 'DEBUG',
+      'outputJSON': true,
+      'encoding': 'utf-8',
+      'consoleLevel': 'DEBUG',
     },
   };
 
