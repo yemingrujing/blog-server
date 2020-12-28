@@ -4,14 +4,14 @@ const Controller = require('../base_controller');
 
 class UserController extends Controller {
   async search() {
-    const { ctx, } = this,
+    const { ctx, service, } = this,
       limit = Number(ctx.request.body.limit) || 10,
       page = Number(ctx.request.body.page) || 1,
       offset = (page*limit) - limit,
       query = {
         'userName': { '$like': `%${ctx.request.body.userName}%`, },
       },
-      result = await ctx.service.admin.user.search(query, limit, offset);
+      result = await service.admin.user.search(query, limit, offset);
     this.success({result, 'type': '查询',});
   }
 

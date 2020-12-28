@@ -16,17 +16,14 @@ class UserService extends Service {
   }
 
   async add(req) {
-    const {ctx,} = this;
-    ctx.logger.info('Service用户新增参数：%j', req.param);
-    const {userIp, userName, roleId, userEmail, userTelephoneNumber, nickName,} = req.param;
-    this.ctx.logger.info('1用户新增参数：%j', req.param);
-    let userRegistTime = await this.service.util.tool.time();
-    this.ctx.logger.info('1用户新增时间：%j', userRegistTime);
-    let updateTime = await this.service.util.tool.time(),
+    const {ctx,} = this,
+      {userIp, userName, roleId, userEmail, userTelephoneNumber, nickName,} = req.param,
+      userRegistTime = ctx.helper.getNowTime(),
+      updateTime = ctx.helper.getNowTime(),
       theme = req.param.theme || '#304156',
       avatar = req.param.avatar || 'https://raw.githubusercontent.com/SpectreAlan/images/master/blog/logo.png',
       status = 0,
-      userPassword = await this.service.util.tool.md5Encode(req.param.userPassword),
+      userPassword = ctx.helper.md5Encode(req.param.userPassword),
       user = await ctx.model.User.create({userIp, userName, userPassword, roleId, userEmail, avatar, userRegistTime, userTelephoneNumber, nickName, theme, status, updateTime,});
     if (user) {
       return user.id;

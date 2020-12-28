@@ -1,7 +1,6 @@
 'use strict';
 
 const Service = require('egg').Service;
-const moment = require('moment');
 const crypto = require('crypto');
 const svgCaptcha = require('svg-captcha');
 
@@ -30,21 +29,6 @@ class ToolService extends Service {
         'msg': errors,
       };
     }
-  }
-
-  async time(format = 'YYYY-MM-DD HH:mm:ss', t) {
-    const time = t ? new Date(t) : new Date();
-    return moment(time).format(format);
-  }
-
-  async toInt(str) {
-    if (typeof str === 'number') {
-      return str;
-    }
-    if (!str) {
-      return str;
-    }
-    return parseInt(str, 10) || 0;
   }
 
   async md5Encode(str) {

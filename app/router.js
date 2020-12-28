@@ -12,8 +12,8 @@ module.exports = app => {
   router.post('/user/login', controller.middle.user.login);
 
   // 用户管理
-  router.post('/users/search', controller.admin.user.search);
-  router.post('/users/add', controller.admin.user.add);
+  router.post('/user/search', controller.admin.user.search);
+  router.post('/user/add', controller.admin.user.add);
 
   // 角色管理
   router.post('/role/search', controller.admin.role.search);

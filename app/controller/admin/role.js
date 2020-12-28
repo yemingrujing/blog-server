@@ -5,29 +5,30 @@ const Controller = require('../base_controller');
 class RoleController extends Controller {
   async search() {
     const {service,} = this,
-      total = await service.sql.selectCount('role'),
-      list = await service.sql.select({'table': role,});
-    this.success({'result':{total, list,},});
+      list = await service.admin.role.search();
+    this.success({'result':{list,},});
   }
 
   async add() {
     const {service, ctx,} = this,
-      param = {...ctx.request.body,};
-    param.createTime = service.tool.time();
-    const result = service.sql.insert({'table': 'role', param,});
-    this.success({result, 'type': '添加',});
+      param = {...ctx.request.body,},
+      result = service.admin.role.add(param.roleName);
+    this.success({'result':result, 'type': '添加',});
   }
 
   async edit() {
     const {service, ctx,} = this,
       param = {...ctx.request.body,},
-      result = await service.sql.update({'table': 'role', param,});
-    this.success({result, 'type':'编辑',});
+      role = await service.admin.role.edit(param.id, param.roleName);
+    this.success({'result':role, 'type':'编辑',});
   }
 
   async delete() {
-    const result = await this.service.sql.delete({'table': 'role',});
-    this.success({result, 'type':'删除',});
+    const {service, ctx,} = this,
+      param = {...ctx.request.body,},
+      role = await service.admin.role.delete(param.id);
+    ctx.logger.info(`角色删除：${role}`);
+    this.success({'result':role, 'type':'删除',});
   }
 }
 

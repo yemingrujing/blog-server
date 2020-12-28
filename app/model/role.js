@@ -18,6 +18,11 @@ module.exports = app => {
         'type': DataTypes.STRING(50),
         'allowNull': false,
       },
+      'delFlag': {
+        'type': DataTypes.INTEGER,
+        'allowNull': false,
+        'defaultValue': '0',
+      },
       'createTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
