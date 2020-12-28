@@ -11,9 +11,6 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1608695222703_9411';
 
-  // add your middleware config here
-  config.middleware = [];
-
   // add your user config here
   const userConfig = {
     'view': {
@@ -21,6 +18,14 @@ module.exports = appInfo => {
       'mapping': {
         '.tpl': 'nunjucks',
       },
+    },
+    // add your middleware config here
+    'middleware':[
+      'errorHandler',
+    ],
+    'errorHandler': {
+      'enable': true,
+      'match': '/api',
     },
     'sequelize' : {
       'dialect': 'mysql',
@@ -81,9 +86,7 @@ module.exports = appInfo => {
         '$values': Op.values,
         '$col': Op.col,
       },
-
     },
-    // 'middleware': ['authority', 'errorHandler',],
     'validate': {
       'convert': true,
       'widelyUndefined': true,

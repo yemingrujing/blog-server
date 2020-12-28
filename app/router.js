@@ -8,16 +8,22 @@ module.exports = app => {
 
   // 登录
   router.get('/', controller.home.index);
-  router.get('/user/captcha', controller.middle.user.captcha);
-  router.post('/user/login', controller.middle.user.login);
+  router.get('/api/user/captcha', controller.middle.user.captcha);
+  router.post('/api/user/login', controller.middle.user.login);
 
   // 用户管理
-  router.post('/user/search', controller.admin.user.search);
-  router.post('/user/add', controller.admin.user.add);
+  router.post('/api/user/search', controller.admin.user.search);
+  router.post('/api/user/add', controller.admin.user.add);
 
   // 角色管理
-  router.post('/role/search', controller.admin.role.search);
-  router.post('/role/add', controller.admin.role.add);
-  router.post('/role/del', controller.admin.role.delete);
-  router.post('/role/edit', controller.admin.role.edit);
+  router.post('/api/role/search', controller.admin.role.search);
+  router.post('/api/role/add', controller.admin.role.add);
+  router.post('/api/role/del', controller.admin.role.delete);
+  router.post('/api/role/edit', controller.admin.role.edit);
+
+  // 菜单管理
+  router.post('/api/menu/search', controller.admin.menu.search);
+  router.post('/api/menu/add', controller.admin.menu.add);
+  router.post('/api/menu/del', controller.admin.menu.delete);
+  router.post('/api/menu/edit', controller.admin.menu.edit);
 };

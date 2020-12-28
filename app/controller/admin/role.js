@@ -12,8 +12,8 @@ class RoleController extends Controller {
   async add() {
     const {service, ctx,} = this,
       param = {...ctx.request.body,},
-      result = service.admin.role.add(param.roleName);
-    this.success({'result':result, 'type': '添加',});
+      role = service.admin.role.add(param.roleName);
+    this.success({'result':role, 'type': '添加',});
   }
 
   async edit() {
