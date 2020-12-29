@@ -29,7 +29,7 @@ module.exports = {
    */
   success(ctx, msg, data) {
     ctx.body = {
-      'code': '000',
+      'code': 200,
       msg,
       data,
     };

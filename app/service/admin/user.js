@@ -4,10 +4,10 @@ const Service = require('egg').Service;
 
 class UserService extends Service {
 
-  async search(param, limit = 0, offset = 0) {
+  async search(param, limit = 0, page = 0) {
     const {ctx,} = this;
     return await ctx.model.User.findAndCountAll({
-      'offset': offset,
+      'offset': (page * limit) - limit,
       'limit': limit,
       'attributes': ['id', 'userName', 'avatar', 'status', 'nickName', 'roleId', 'updateTime', 'remark',],
       'where': param,
@@ -41,7 +41,7 @@ class UserService extends Service {
     if (user) {
       return user.id;
     }
-    ctx.throw('999', '用户新增失败：' + req.param);
+    ctx.throw(500, {'errCode': 999, 'errMsg': '用户新增失败：' + req.param,});
   }
 }
 

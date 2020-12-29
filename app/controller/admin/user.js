@@ -7,11 +7,10 @@ class UserController extends Controller {
     const {ctx, service,} = this,
       limit = Number(ctx.request.body.limit) || 10,
       page = Number(ctx.request.body.page) || 1,
-      offset = (page * limit) - limit,
       query = {
         'userName': {'$like': `%${ctx.request.body.userName}%`,},
       },
-      result = await service.admin.user.search(query, limit, offset);
+      result = await service.admin.user.search(query, limit, page);
     this.success(result, '查询');
   }
 
