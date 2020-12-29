@@ -4,14 +4,14 @@ const Service = require('egg').Service;
 
 class UserService extends Service {
 
-  async search(param, limit = 0, offset = 0 ) {
+  async search(param, limit = 0, offset = 0) {
     const {ctx,} = this;
     return await ctx.model.User.findAndCountAll({
       'offset': offset,
       'limit': limit,
-      'attributes':['id', 'userName', 'avatar', 'status', 'nickName', 'roleId','updateTime', 'remark',],
+      'attributes': ['id', 'userName', 'avatar', 'status', 'nickName', 'roleId', 'updateTime', 'remark',],
       'where': param,
-      'order': [['userRegistTime','desc',],],
+      'order': [['userRegistTime', 'desc',],],
     });
   }
 
@@ -24,11 +24,24 @@ class UserService extends Service {
       avatar = req.param.avatar || 'https://raw.githubusercontent.com/SpectreAlan/images/master/blog/logo.png',
       status = 0,
       userPassword = ctx.helper.md5Encode(req.param.userPassword),
-      user = await ctx.model.User.create({userIp, userName, userPassword, roleId, userEmail, avatar, userRegistTime, userTelephoneNumber, nickName, theme, status, updateTime,});
+      user = await ctx.model.User.create({
+        userIp,
+        userName,
+        userPassword,
+        roleId,
+        userEmail,
+        avatar,
+        userRegistTime,
+        userTelephoneNumber,
+        nickName,
+        theme,
+        status,
+        updateTime,
+      });
     if (user) {
       return user.id;
     }
-    ctx.throw(500, '用户新增失败：'+ req.param);
+    ctx.throw(500, '用户新增失败：' + req.param);
   }
 }
 

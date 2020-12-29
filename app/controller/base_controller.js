@@ -11,6 +11,7 @@ class BaseController extends Controller {
     }
     this.ctx.body = res;
   }
+
   error(msg, data) {
     this.ctx.body = {
       'msg': msg || 'error',
@@ -18,6 +19,7 @@ class BaseController extends Controller {
       data,
     };
   }
+
   notFound(msg) {
     this.ctx.throw(404, msg || 'not found');
   }

@@ -20,14 +20,14 @@ module.exports = appInfo => {
       },
     },
     // add your middleware config here
-    'middleware':[
+    'middleware': [
       'errorHandler',
     ],
     'errorHandler': {
       'enable': true,
       'match': '/api',
     },
-    'sequelize' : {
+    'sequelize': {
       'dialect': 'mysql',
       'database': 'db_blog', //数据库名
       'host': '',
@@ -44,13 +44,13 @@ module.exports = appInfo => {
       'dialectOptions': { // 让读取date类型数据时返回字符串而不是UTC时间
         'dateStrings': true,
         typeCast(field, next) {
-          if (field.type === 'DATETIME'){
+          if (field.type === 'DATETIME') {
             return field.string();
           }
           return next();
         },
       },
-      'operatorsAliases':{ // 使用默认运算符别名
+      'operatorsAliases': { // 使用默认运算符别名
         '$eq': Op.eq,
         '$ne': Op.ne,
         '$gte': Op.gte,

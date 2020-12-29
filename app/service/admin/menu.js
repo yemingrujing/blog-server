@@ -11,8 +11,11 @@ class MenuService extends Service {
     });
   }
 
-  async add(pMenuId, menuName, url) {
-    const {ctx, } = this;
+  async add(pMenuId, menuName, pageUrl, url) {
+    const {ctx,} = this;
+    if (!menuName || !pageUrl) {
+      ctx.throw(500, '参数不能为空');
+    }
     if (!pMenuId) {
       pMenuId = 0;
     }
@@ -22,12 +25,12 @@ class MenuService extends Service {
         ctx.throw(500, '无法获取到父菜单信息');
       }
     }
-    return await ctx.model.Menu.create({pMenuId, menuName, url,});
+    return await ctx.model.Menu.create({pMenuId, menuName, pageUrl, url,});
   }
 
-  async edit(id, pMenuId, menuName, url) {
-    const {ctx, } = this;
-    if (!menuName || !url) {
+  async edit(id, pMenuId, menuName, pageUrl, url) {
+    const {ctx,} = this;
+    if (!menuName || !pageUrl) {
       ctx.throw(500, '参数不能为空');
     }
     if (!pMenuId) {
@@ -43,7 +46,7 @@ class MenuService extends Service {
         ctx.throw(500, '无法获取到父菜单信息');
       }
     }
-    return await menu.update({pMenuId, menuName, url,});
+    return await menu.update({pMenuId, menuName, pageUrl, url,});
   }
 
   async delete(id) {

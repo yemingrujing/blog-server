@@ -8,20 +8,21 @@ class RoleService extends Service {
     const {ctx,} = this;
     return await ctx.model.Role.findAll(
       {
-        'attributes':['id', 'roleName', 'roleKey',],
+        'attributes': ['id', 'roleName', 'roleKey',],
         'where': {'delFlag': 0,},
-        'order': [['createTime', 'desc',],],});
+        'order': [['createTime', 'desc',],],
+      });
   }
 
   async add(roleName) {
-    const {ctx, } = this,
+    const {ctx,} = this,
       roleKey = ctx.helper.getUUID(),
       createTime = ctx.helper.getNowTime(),
       role = await ctx.model.Role.create({roleName, roleKey, createTime,});
     if (role) {
       return role.id;
     }
-    ctx.throw(500, '用户新增失败：'+ roleName);
+    ctx.throw(500, '用户新增失败：' + roleName);
   }
 
   async edit(id, roleName) {

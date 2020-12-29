@@ -19,14 +19,18 @@ module.exports = app => {
         'allowNull': false,
       },
       'url': {
-        'type': DataTypes.STRING(15),
+        'type': DataTypes.STRING(100),
+        'allowNull': true,
+      },
+      'pageUrl': {
+        'type': DataTypes.STRING(100),
         'allowNull': false,
       },
     }, {
       'tableName': 'menu',
     });
 
-  Model.associate = function() {
+  Model.associate = function () {
 
   };
 
