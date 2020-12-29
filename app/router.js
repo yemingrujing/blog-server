@@ -20,6 +20,7 @@ module.exports = app => {
   router.post('/api/role/add', controller.admin.role.add);
   router.post('/api/role/del', controller.admin.role.delete);
   router.post('/api/role/edit', controller.admin.role.edit);
+  router.post('/api/role/menu/add', controller.admin.role.addMenu);
 
   // 菜单管理
   router.post('/api/menu/search', controller.admin.menu.search);

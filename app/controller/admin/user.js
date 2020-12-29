@@ -17,9 +17,8 @@ class UserController extends Controller {
 
   async add() {
     const {service, ctx,} = this,
-      param = {...ctx.request.body,};
-    ctx.logger.info('Controller用户新增参数：%j', param);
-    const result = await service.admin.user.add({param,});
+      param = {...ctx.request.body,},
+      result = await service.admin.user.add({param,});
     this.success(result, '添加');
   }
 }

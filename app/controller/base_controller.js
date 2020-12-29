@@ -8,7 +8,7 @@ class BaseController extends Controller {
   }
 
   error(msg, data) {
-    this.ctx.helper.fail(this.ctx, {'code': '500', 'msg': msg || 'error', data,});
+    this.ctx.helper.fail(this.ctx, {'code': '999', 'msg': msg || 'error', data,});
   }
 
   notFound(msg) {

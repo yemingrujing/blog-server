@@ -16,23 +16,25 @@ class RoleService extends Service {
 
   async add(roleName) {
     const {ctx,} = this,
-      roleKey = ctx.helper.getUUID(),
-      createTime = ctx.helper.getNowTime(),
-      role = await ctx.model.Role.create({roleName, roleKey, createTime,});
+      role = await ctx.model.Role.create({
+        roleName,
+        'roleKey': ctx.helper.getUUID(),
+        'createTime': ctx.helper.getNowTime(),
+      });
     if (role) {
       return role.id;
     }
-    ctx.throw('500', '用户新增失败：' + roleName);
+    ctx.throw('999', '用户新增失败：' + roleName);
   }
 
   async edit(id, roleName) {
     const {ctx,} = this,
       role = await ctx.model.Role.findByPk(id);
     if (!role) {
-      ctx.throw('500', '无法获取到指定的角色信息');
+      ctx.throw('999', '无法获取到指定的角色信息');
     }
     if (role.delFlag === 1) {
-      ctx.throw('500', '当前的角色信息已经被删除了');
+      ctx.throw('999', '当前的角色信息已经被删除了');
     }
     return await role.update({roleName,});
   }
@@ -41,13 +43,33 @@ class RoleService extends Service {
     const {ctx,} = this,
       role = await ctx.model.Role.findByPk(id);
     if (!role) {
-      ctx.throw('500', '无法获取到指定的角色信息');
+      ctx.throw('999', '无法获取到指定的角色信息');
     }
     if (role.delFlag === 1) {
-      ctx.throw('500', '当前的角色信息已经被删除了');
+      ctx.throw('999', '当前的角色信息已经被删除了');
     }
     const delFlag = 1;
     return await role.update({delFlag,});
+  }
+
+  async addMenu(roleId, menuId) {
+    const {ctx, service,} = this,
+      role = await ctx.model.Role.findByPk(roleId);
+    if (!role) {
+      ctx.throw('999', '无法获取到指定的角色信息');
+    }
+    const count = await ctx.model.Relationship.count({
+      'where': {'roleKey': role.roleKey, 'menuId': menuId,},
+    });
+    if (count > 0) {
+      ctx.throw('999', '已添加该菜单');
+    }
+    await service.admin.menu.queryById(menuId);
+    return await ctx.model.Relationship.create({
+      'roleKey': role.roleKey,
+      menuId,
+      'createTime': ctx.helper.getNowTime(),
+    });
   }
 }
 
