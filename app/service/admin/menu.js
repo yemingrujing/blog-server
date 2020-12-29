@@ -19,7 +19,7 @@ class MenuService extends Service {
     if (pMenuId > 0) {
       const pMenu = await ctx.model.Menu.findByPk(pMenuId);
       if (!pMenu) {
-        ctx.throw(422, '无法获取到父菜单信息');
+        ctx.throw(500, '无法获取到父菜单信息');
       }
     }
     return await ctx.model.Menu.create({pMenuId, menuName, url,});
@@ -28,7 +28,7 @@ class MenuService extends Service {
   async edit(id, pMenuId, menuName, url) {
     const {ctx, } = this;
     if (!menuName || !url) {
-      throw new Error('参数不能为空');
+      ctx.throw(500, '参数不能为空');
     }
     if (!pMenuId) {
       pMenuId = 0;
@@ -40,7 +40,7 @@ class MenuService extends Service {
     if (pMenuId > 0) {
       const pMenu = await ctx.model.Menu.findByPk(pMenuId);
       if (!pMenu) {
-        throw new Error('无法获取到父菜单信息');
+        ctx.throw(500, '无法获取到父菜单信息');
       }
     }
     return await menu.update({pMenuId, menuName, url,});
@@ -50,7 +50,7 @@ class MenuService extends Service {
     const {ctx,} = this,
       menu = await ctx.model.Menu.findByPk(id);
     if (!menu) {
-      throw new Error('无法获取到指定的菜单信息');
+      ctx.throw(500, '无法获取到指定的菜单信息');
     }
     return await menu.destroy();
   }

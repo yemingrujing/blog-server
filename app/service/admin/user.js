@@ -28,7 +28,7 @@ class UserService extends Service {
     if (user) {
       return user.id;
     }
-    throw new Error('用户新增失败：'+ req.param);
+    ctx.throw(500, '用户新增失败：'+ req.param);
   }
 }
 

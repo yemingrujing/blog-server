@@ -21,17 +21,17 @@ class RoleService extends Service {
     if (role) {
       return role.id;
     }
-    throw new Error('用户新增失败：'+ roleName);
+    ctx.throw(500, '用户新增失败：'+ roleName);
   }
 
   async edit(id, roleName) {
     const {ctx,} = this,
       role = await ctx.model.Role.findByPk(id);
     if (!role) {
-      throw new Error('无法获取到指定的角色信息');
+      ctx.throw(500, '无法获取到指定的角色信息');
     }
     if (role.delFlag === 1) {
-      throw new Error('当前的角色信息已经被删除了');
+      ctx.throw(500, '当前的角色信息已经被删除了');
     }
     return await role.update({roleName,});
   }
@@ -40,10 +40,10 @@ class RoleService extends Service {
     const {ctx,} = this,
       role = await ctx.model.Role.findByPk(id);
     if (!role) {
-      throw new Error('无法获取到指定的角色信息');
+      ctx.throw(500, '无法获取到指定的角色信息');
     }
     if (role.delFlag === 1) {
-      throw new Error('当前的角色信息已经被删除了');
+      ctx.throw(500, '当前的角色信息已经被删除了');
     }
     const delFlag = 1;
     return await role.update({delFlag,});
