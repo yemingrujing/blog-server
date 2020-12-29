@@ -4,9 +4,9 @@ const {Controller,} = require('egg');
 
 class BaseController extends Controller {
   success({result, type,}) {
-    const res = {'code': 1, 'data': result,};
+    const res = {'code': '000', 'data': result,};
     if (type) {
-      res.code = result ? 1 : 0;
+      res.code = result ? '000' : '500';
       res.msg = res.msg = type + (res.code ? '成功' : '失败');
     }
     this.ctx.body = res;
@@ -15,13 +15,13 @@ class BaseController extends Controller {
   error(msg, data) {
     this.ctx.body = {
       'msg': msg || 'error',
-      'code': 0,
+      'code': '500',
       data,
     };
   }
 
   notFound(msg) {
-    this.ctx.throw(404, msg || 'not found');
+    this.ctx.throw('404', msg || 'not found');
   }
 }
 
