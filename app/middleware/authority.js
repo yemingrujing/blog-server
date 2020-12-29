@@ -12,10 +12,10 @@ module.exports = () => {
       if (ctx.session.permission.includes(url)) {
         await next();
       } else {
-        ctx.body = { 'code': 0, 'msg': '暂无权限执行此操作', 'data': null, };
+        ctx.body = { 'code': '999', 'msg': '暂无权限执行此操作', 'data': null, };
       }
     } else {
-      ctx.throw(401, '您需要先登陆以后才能操作');
+      ctx.throw('401', '您需要先登陆以后才能操作');
     }
   };
 };
