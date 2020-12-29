@@ -12,14 +12,14 @@ class MenuController extends Controller {
   async add() {
     const {service, ctx,} = this,
       param = {...ctx.request.body,},
-      menu = await service.admin.menu.add(param.pMenuId, param.menuName, param.url);
+      menu = await service.admin.menu.add(param.pMenuId, param.menuName, param.pageUrl, param.url);
     this.success({'result': menu, 'type': '添加',});
   }
 
   async edit() {
     const {service, ctx,} = this,
       param = {...ctx.request.body,},
-      menu = await service.admin.menu.edit(param.id, param.pMenuId, param.menuName, param.url);
+      menu = await service.admin.menu.edit(param.id, param.pMenuId, param.menuName, param.pageUrl, param.url);
     this.success({'result': menu, 'type': '编辑',});
   }
 

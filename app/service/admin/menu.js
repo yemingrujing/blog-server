@@ -7,7 +7,7 @@ class MenuService extends Service {
   async search() {
     const {ctx,} = this;
     return await ctx.model.Menu.findAll({
-      'attributes': ['id', 'pMenuId', 'menuName', 'url',],
+      'attributes': ['id', 'pMenuId', 'menuName', 'pageUrl', 'url',],
     });
   }
 
