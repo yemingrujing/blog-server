@@ -9,11 +9,8 @@ module.exports = () => {
       ctx.app.emit('error', err, ctx);
       const status = err.status || '500',
         error = status === '500' && ctx.app.config.env === 'prod' ? 'Internal Server Error' : err.message;
-      ctx.body = {
-        'msg': error,
-        'code': status,
-        'data': [],
-      };
+
+      ctx.helper.fail(ctx, {'code': status, 'msg': error, 'data': [],});
     }
   };
 };

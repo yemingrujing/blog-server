@@ -12,7 +12,7 @@ class UserController extends Controller {
         'userName': {'$like': `%${ctx.request.body.userName}%`,},
       },
       result = await service.admin.user.search(query, limit, offset);
-    this.success({result, 'type': '查询',});
+    this.success(result, '查询');
   }
 
   async add() {
@@ -20,7 +20,7 @@ class UserController extends Controller {
       param = {...ctx.request.body,};
     ctx.logger.info('Controller用户新增参数：%j', param);
     const result = await service.admin.user.add({param,});
-    this.success({result, 'type': '添加',});
+    this.success(result, '添加');
   }
 }
 
