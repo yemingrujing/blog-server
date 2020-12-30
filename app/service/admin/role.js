@@ -72,13 +72,32 @@ class RoleService extends Service {
     });
   }
 
-  async delMenu(id) {
-    const {ctx,} = this,
-      relationship = await ctx.model.Relationship.findByPk(id);
-    if (!relationship) {
-      return null;
+  async queryRoleMenu(roleId) {
+    const {ctx,} = this;
+    const {QueryTypes,} = require('sequelize'),
+      role = await ctx.model.Role.findByPk(roleId);
+    if (!role) {
+      ctx.throw(500, [999, '无法获取到指定的角色信息',]);
     }
-    return await relationship.destroy();
+    return await ctx.model.query('SELECT\n' +
+      '\tr.id,\n' +
+      '\tr.roleKey,\n' +
+      '\tr.roleName,\n' +
+      '\tm.pMenuId,\n' +
+      '\tm.menuName,\n' +
+      '\tm.pageUrl,\n' +
+      '\tm.url \n' +
+      'FROM\n' +
+      '\trole r\n' +
+      '\tINNER JOIN relationship rs ON r.roleKey = rs.roleKey\n' +
+      '\tINNER JOIN menu m ON rs.menuId = m.id \n' +
+      'WHERE\n' +
+      '\tr.id = $id', {'bind': {'id': roleId,}, 'type': QueryTypes.SELECT,});
+  }
+
+  async delMenu(id) {
+    const {ctx,} = this;
+    return await ctx.model.Relationship.destroy({'where': {id,},});
   }
 }
 

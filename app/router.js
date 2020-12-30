@@ -21,6 +21,7 @@ module.exports = app => {
   router.post('/api/role/del', controller.admin.role.delete);
   router.post('/api/role/edit', controller.admin.role.edit);
   router.post('/api/role/menu/add', controller.admin.role.addMenu);
+  router.post('/api/role/menu/query', controller.admin.role.queryRoleMenu);
   router.post('/api/role/menu/del', controller.admin.role.delMenu);
 
   // 菜单管理

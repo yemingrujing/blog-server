@@ -37,6 +37,13 @@ class RoleController extends Controller {
     this.success(relationship, '添加');
   }
 
+  async queryRoleMenu() {
+    const {service, ctx,} = this,
+      param = {...ctx.request.body,},
+      relationship = await service.admin.role.queryRoleMenu(param.id);
+    this.success(relationship, '查询');
+  }
+
   async delMenu() {
     const {service, ctx,} = this,
       param = {...ctx.request.body,},
