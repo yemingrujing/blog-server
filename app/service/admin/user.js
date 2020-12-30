@@ -41,7 +41,7 @@ class UserService extends Service {
     if (user) {
       return user.id;
     }
-    ctx.throw(500, {'errCode': 999, 'errMsg': '用户新增失败：' + req.param,});
+    ctx.throw(500, [999, '用户新增失败：' + req.param,]);
   }
 }
 

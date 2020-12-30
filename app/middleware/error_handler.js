@@ -13,8 +13,8 @@ module.exports = () => {
         if (ctx.app.config.env === 'prod') {
           error = 'Internal Server Error';
         } else {
-          status = err.errCode;
-          error = err.errMsg;
+          status = err[0];
+          error = err[1];
         }
       } else {
         error = err.message;

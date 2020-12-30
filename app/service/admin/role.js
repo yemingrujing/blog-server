@@ -24,17 +24,17 @@ class RoleService extends Service {
     if (role) {
       return role.id;
     }
-    ctx.throw(500, {'errCode': 999, 'errMsg': '用户新增失败：' + roleName,});
+    ctx.throw(500, [999, '用户新增失败：' + roleName,]);
   }
 
   async edit(id, roleName) {
     const {ctx,} = this,
       role = await ctx.model.Role.findByPk(id);
     if (!role) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '无法获取到指定的角色信息',});
+      ctx.throw(500, [999, '无法获取到指定的角色信息',]);
     }
     if (role.delFlag === 1) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '当前的角色信息已经被删除了',});
+      ctx.throw(500, [999, '当前的角色信息已经被删除了',]);
     }
     return await role.update({roleName,});
   }
@@ -43,10 +43,10 @@ class RoleService extends Service {
     const {ctx,} = this,
       role = await ctx.model.Role.findByPk(id);
     if (!role) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '无法获取到指定的角色信息',});
+      ctx.throw(500, [999, '无法获取到指定的角色信息',]);
     }
     if (role.delFlag === 1) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '当前的角色信息已经被删除了',});
+      ctx.throw(500, [999, '当前的角色信息已经被删除了',]);
     }
     const delFlag = 1;
     return await role.update({delFlag,});
@@ -56,13 +56,13 @@ class RoleService extends Service {
     const {ctx, service,} = this,
       role = await ctx.model.Role.findByPk(roleId);
     if (!role) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '无法获取到指定的角色信息',});
+      ctx.throw(500, [999, '无法获取到指定的角色信息',]);
     }
     const count = await ctx.model.Relationship.count({
       'where': {'roleKey': role.roleKey, 'menuId': menuId,},
     });
     if (count > 0) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '已添加该菜单',});
+      ctx.throw(500, [999, '已添加该菜单',]);
     }
     await service.admin.menu.queryById(menuId);
     return await ctx.model.Relationship.create({

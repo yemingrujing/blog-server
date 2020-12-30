@@ -14,7 +14,7 @@ class MenuService extends Service {
   async add(pMenuId, menuName, pageUrl, url) {
     const {ctx,} = this;
     if (!menuName || !pageUrl) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '参数不能为空',});
+      ctx.throw(500, [999, '参数不能为空',]);
     }
     if (!pMenuId) {
       pMenuId = 0;
@@ -22,7 +22,7 @@ class MenuService extends Service {
     if (pMenuId > 0) {
       const pMenu = await ctx.model.Menu.findByPk(pMenuId);
       if (!pMenu) {
-        ctx.throw(500, {'errCode': 999, 'errMsg': '无法获取到父菜单信息',});
+        ctx.throw(500, [999, '无法获取到父菜单信息',]);
       }
     }
     return await ctx.model.Menu.create({pMenuId, menuName, pageUrl, url,});
@@ -31,19 +31,19 @@ class MenuService extends Service {
   async edit(id, pMenuId, menuName, pageUrl, url) {
     const {ctx,} = this;
     if (!menuName || !pageUrl) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '参数不能为空',});
+      ctx.throw(500, [999, '参数不能为空',]);
     }
     if (!pMenuId) {
       pMenuId = 0;
     }
     const menu = await ctx.model.Menu.findByPk(id);
     if (!menu) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '无法获取到指定的菜单信息',});
+      ctx.throw(500, [999, '无法获取到指定的菜单信息',]);
     }
     if (pMenuId > 0) {
       const pMenu = await ctx.model.Menu.findByPk(pMenuId);
       if (!pMenu) {
-        ctx.throw(500, {'errCode': 999, 'errMsg': '无法获取到父菜单信息',});
+        ctx.throw(500, [999, '无法获取到父菜单信息',]);
       }
     }
     return await menu.update({pMenuId, menuName, pageUrl, url,});
@@ -53,7 +53,7 @@ class MenuService extends Service {
     const {ctx,} = this,
       menu = await ctx.model.Menu.findByPk(id);
     if (!menu) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '无法获取到指定的菜单信息',});
+      ctx.throw(500, [999, '无法获取到指定的菜单信息',]);
     }
     return await menu.destroy();
   }
@@ -62,7 +62,7 @@ class MenuService extends Service {
     const {ctx,} = this,
       menu = await ctx.model.Menu.findByPk(id);
     if (!menu) {
-      ctx.throw(500, {'errCode': 999, 'errMsg': '无法获取到指定的菜单信息',});
+      ctx.throw(500, [999, '无法获取到指定的菜单信息',]);
     }
     return menu;
   }
