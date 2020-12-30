@@ -2,15 +2,34 @@
 
 const moment = require('moment');
 const uuidV1 = require('uuid/v1');
+const crypto = require('crypto');
 
 module.exports = {
+
+  /**
+   * 获取当前时间
+   * @param format
+   * @param t
+   * @return {*}
+   */
   getNowTime(format = 'YYYY-MM-DD HH:mm:ss', t) {
     const time = t ? new Date(t) : new Date();
     return moment(time).format(format);
   },
+
+  /**
+   * UUID生成
+   * @return {*}
+   */
   getUUID() {
     return uuidV1().replace(/-/g, '');
   },
+
+  /**
+   * MD5加密
+   * @param str
+   * @return {Promise<ArrayBuffer>|null}
+   */
   md5Encode(str) {
     if (str) {
       const md5Str = crypto.createHash('md5').update(str).digest('hex');
