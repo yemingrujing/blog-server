@@ -34,7 +34,7 @@ class RoleService extends Service {
       ctx.throw(500, [999, '无法获取到指定的角色信息',]);
     }
     if (role.delFlag === 1) {
-      ctx.throw(500, [999, '当前的角色信息已经被删除了',]);
+      ctx.throw(500, [999, '当前角色已被删除',]);
     }
     return await role.update({roleName,});
   }
@@ -46,7 +46,7 @@ class RoleService extends Service {
       ctx.throw(500, [999, '无法获取到指定的角色信息',]);
     }
     if (role.delFlag === 1) {
-      ctx.throw(500, [999, '当前的角色信息已经被删除了',]);
+      ctx.throw(500, [999, '当前角色已被删除',]);
     }
     const delFlag = 1;
     return await role.update({delFlag,});
@@ -62,7 +62,7 @@ class RoleService extends Service {
       'where': {'roleKey': role.roleKey, 'menuId': menuId,},
     });
     if (count > 0) {
-      ctx.throw(500, [999, '已添加该菜单',]);
+      ctx.throw(500, [999, role.roleName + '角色已添加该菜单',]);
     }
     await service.admin.menu.queryById(menuId);
     return await ctx.model.Relationship.create({
@@ -70,6 +70,15 @@ class RoleService extends Service {
       menuId,
       'createTime': ctx.helper.getNowTime(),
     });
+  }
+
+  async delMenu(id) {
+    const {ctx,} = this,
+      relationship = await ctx.model.Relationship.findByPk(id);
+    if (!relationship) {
+      return null;
+    }
+    return await relationship.destroy();
   }
 }
 
