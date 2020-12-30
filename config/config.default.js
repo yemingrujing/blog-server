@@ -23,6 +23,9 @@ module.exports = appInfo => {
     'middleware': [
       'errorHandler',
     ],
+    'jwt': {
+      'secret': '123456',
+    },
     'errorHandler': {
       'enable': true,
       'match': '/api',

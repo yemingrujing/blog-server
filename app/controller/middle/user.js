@@ -15,8 +15,12 @@ class UserController extends Controller {
       this.error('参数错误', validator);
       return;
     }
-    const userInfo = await service.middle.user.login(username, password);
-    this.success(userInfo, '登录');
+    const isValidUser = await service.middle.user.login(username, password);
+    if (isValidUser) {
+      const token = app.jwt.sign({ 'username': username, }, app.config.jwt.secret);
+      this.success(token, '登录');
+    }
+    ctx.throw(401, '登录失败，用户名/密码错误');
   }
 
   async userInfo() {

@@ -18,7 +18,16 @@ class UserService extends Service {
   async add(req) {
     const {ctx,} = this,
       {userIp, userName, roleId, userEmail, userTelephoneNumber, nickName,} = req.param,
-      userRegistTime = ctx.helper.getNowTime(),
+      count = await ctx.model.User.count({
+        'where': {
+          'userName': username,
+          'status': 0,
+        },
+      });
+    if (count > 0) {
+      ctx.throw(500, [1002, '用户已存在',]);
+    }
+    const userRegistTime = ctx.helper.getNowTime(),
       updateTime = ctx.helper.getNowTime(),
       theme = req.param.theme || '#304156',
       avatar = req.param.avatar || 'https://raw.githubusercontent.com/SpectreAlan/images/master/blog/logo.png',

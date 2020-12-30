@@ -4,9 +4,9 @@ const { app, assert, } = require('egg-mock/bootstrap');
 
 describe('test/app/controller/admin/user.test.js', () => {
   it('UserController', () => {
-    let param = {'userName': 'ye', 'limit': 10, 'page': 1,};
+    let param = {'username': 'yemingrujing', 'password': 'As1234567', 'captcha': '1234',};
     app.httpRequest()
-      .post('/users/search')
+      .post('/api/user/search')
       .type('json')
       .send(param)
       .expect('200')
