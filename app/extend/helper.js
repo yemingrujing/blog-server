@@ -33,10 +33,8 @@ module.exports = {
   md5Encode(str) {
     if (str) {
       const md5Str = crypto.createHash('md5').update(str).digest('hex');
-      this.ctx.logger.info('2用户新增密码MD5加密：%j', md5Str);
       return md5Str;
     }
-    this.ctx.logger.info('3用户新增密码MD5加密：%j', str);
     return null;
   },
 

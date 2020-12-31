@@ -22,6 +22,7 @@ module.exports = appInfo => {
     // add your middleware config here
     'middleware': [
       'errorHandler',
+      'authority',
     ],
     'jwt': {
       'secret': '123456',
@@ -94,13 +95,20 @@ module.exports = appInfo => {
       'convert': true,
       'widelyUndefined': true,
     },
+    'session': {
+      'key': 'SESSION_ID',
+      'maxAge': 1000 * 60 * 30,
+      'httpOnly': true,
+      'encrypt': true,
+      'renew': true,
+    },
     'security': {
       'csrf': {
         'enable': false,
         'headerName': 'x-csrf-token',// 自定义请求头
         'ignoreJSON': true, // 默认为 false，当设置为 true 时，将会放过所有 content-type 为 `application/json` 的请求
       },
-      'domainWhiteList': ['*',],
+      'domainWhiteList': ['http://127.0.0.1:7001',],
     },
     'cors': {
       'origin': '*',

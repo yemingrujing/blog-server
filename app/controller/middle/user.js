@@ -15,17 +15,18 @@ class UserController extends Controller {
       this.error('参数错误', validator);
       return;
     }
-    const isValidUser = await service.middle.user.login(username, password);
-    if (isValidUser) {
-      const token = app.jwt.sign({ 'username': username, }, app.config.jwt.secret);
-      this.success(token, '登录');
-    }
-    ctx.throw(401, '登录失败，用户名/密码错误');
+    const userInfo = await service.middle.user.login(username, password),
+      token = app.jwt.sign({'username': username,}, app.config.jwt.secret);
+    ctx.session.roleId = userInfo.roleId;
+    ctx.session.username = username;
+    ctx.session.captcha = '';
+    this.success(token, '登录');
   }
 
   async userInfo() {
-    const {service, ctx,} = this,
-      param = {'table': 'role', 'columns': ['roleKey',], 'where': {'id': ctx.session.role,},};
+    const {service,} = this,
+      result = await service.middle.user.userInfo();
+    this.success(result, '登录');
   }
 
   async captcha() {

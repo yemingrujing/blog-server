@@ -52,24 +52,29 @@ class RoleService extends Service {
     return await role.update({delFlag,});
   }
 
-  async addMenu(roleId, menuId) {
-    const {ctx, service,} = this,
+  async addMenu(roleId, menuIds) {
+    const {ctx,} = this,
       role = await ctx.model.Role.findByPk(roleId);
     if (!role) {
       ctx.throw(500, [999, '无法获取到指定的角色信息',]);
     }
-    const count = await ctx.model.Relationship.count({
-      'where': {'roleKey': role.roleKey, 'menuId': menuId,},
-    });
-    if (count > 0) {
-      ctx.throw(500, [999, role.roleName + '角色已添加该菜单',]);
-    }
-    await service.admin.menu.queryById(menuId);
-    return await ctx.model.Relationship.create({
-      'roleKey': role.roleKey,
-      menuId,
-      'createTime': ctx.helper.getNowTime(),
-    });
+    let insertItem = [];
+    // 并发操作，循环用for
+    await Promise.all(menuIds.map(async (menuId) => {
+      let count = await ctx.model.Relationship.count({
+        'where': {'roleKey': role.roleKey, 'menuId': menuId,},
+      });
+      if (count > 0) {
+        ctx.throw(500, [999, role.roleName + '角色已添加该菜单',]);
+      }
+      let mCount = await ctx.model.Menu.count({'where': {'id': menuId,},});
+      ctx.logger.info('mCount：' + mCount);
+      if (mCount <= 0) {
+        ctx.throw(500, [999, '无法获取到指定的菜单信息，菜单ID：' + menuId,]);
+      }
+      insertItem.push({'roleKey': role.roleKey, menuId,});
+    }));
+    return await ctx.model.Relationship.bulkCreate(insertItem);
   }
 
   async queryRoleMenu(roleId) {

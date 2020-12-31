@@ -33,7 +33,7 @@ class RoleController extends Controller {
   async addMenu() {
     const {service, ctx,} = this,
       param = {...ctx.request.body,},
-      relationship = await service.admin.role.addMenu(param.roleId, param.menuId);
+      relationship = await service.admin.role.addMenu(param.roleId, param.menuIds);
     this.success(relationship, '添加');
   }
 

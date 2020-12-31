@@ -7,13 +7,14 @@ class MenuService extends Service {
   async search() {
     const {ctx,} = this;
     return await ctx.model.Menu.findAll({
-      'attributes': ['id', 'pMenuId', 'menuName', 'pageUrl', 'url',],
+      'attributes': ['id', 'pMenuId', 'menuName', 'pageUrl', 'url', 'icon', 'sort',],
+      'order': [['menuType', 'asc',], ['sort', 'asc',],],
     });
   }
 
-  async add(pMenuId, menuName, pageUrl, url) {
+  async add(menuType, pMenuId, menuName, pageUrl, url, icon) {
     const {ctx,} = this;
-    if (!menuName || !pageUrl) {
+    if (!menuName) {
       ctx.throw(500, [999, '参数不能为空',]);
     }
     if (!pMenuId) {
@@ -25,12 +26,16 @@ class MenuService extends Service {
         ctx.throw(500, [999, '无法获取到父菜单信息',]);
       }
     }
-    return await ctx.model.Menu.create({pMenuId, menuName, pageUrl, url,});
+    if (!menuType) {
+      menuType = 0;
+    }
+    const menuKey = ctx.helper.md5Encode(ctx.helper.getUUID());
+    return await ctx.model.Menu.create({menuType, menuKey, pMenuId, menuName, pageUrl, url, icon,});
   }
 
-  async edit(id, pMenuId, menuName, pageUrl, url) {
+  async edit(id, pMenuId, menuType, menuName, pageUrl, url, icon) {
     const {ctx,} = this;
-    if (!menuName || !pageUrl) {
+    if (!menuName) {
       ctx.throw(500, [999, '参数不能为空',]);
     }
     if (!pMenuId) {
@@ -46,7 +51,10 @@ class MenuService extends Service {
         ctx.throw(500, [999, '无法获取到父菜单信息',]);
       }
     }
-    return await menu.update({pMenuId, menuName, pageUrl, url,});
+    if (!menuType) {
+      menuType = 0;
+    }
+    return await menu.update({pMenuId, menuType, menuName, pageUrl, url, icon,});
   }
 
   async delete(id) {

@@ -10,6 +10,15 @@ module.exports = app => {
         'primaryKey': true,
         'autoIncrement': true,
       },
+      'menuType': {
+        'type': DataTypes.INTEGER,
+        'allowNull': false,
+        'defaultValue': '0',
+      },
+      'menuKey': {
+        'type': DataTypes.STRING(100),
+        'allowNull': false,
+      },
       'pMenuId': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
@@ -24,7 +33,16 @@ module.exports = app => {
       },
       'pageUrl': {
         'type': DataTypes.STRING(100),
+        'allowNull': true,
+      },
+      'icon': {
+        'type': DataTypes.STRING(255),
+        'allowNull': true,
+      },
+      'sort': {
+        'type': DataTypes.INTEGER,
         'allowNull': false,
+        'defaultValue': '1',
       },
     }, {
       'tableName': 'menu',

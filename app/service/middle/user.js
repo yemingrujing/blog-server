@@ -6,32 +6,51 @@ class UserService extends Service {
 
   async login(username, password) {
     const {ctx,} = this,
-      count = await ctx.model.User.count({
+      userInfo = await ctx.model.User.findOne({
         'where': {
           'userName': username,
           'userPassword': ctx.helper.md5Encode(password),
           'status': 0,
         },
       });
-    if (count > 0) {
-      return true;
+    if (!userInfo) {
+      ctx.throw(401, '登录失败，用户名/密码错误');
     }
-    return false;
+    return userInfo;
   }
 
-  async queryUserInfo(username) {
-    const {ctx,} = this,
-      userInfo = await ctx.model.User.findAll({
-        'attributes': ['id', 'userName', 'nickName', 'roleId', 'avatar', 'theme',],
-        'where': {username, 'status': 0,},
-      });
-    if (!userInfo) {
-      ctx.throw(500, [999, '用户信息不存在',]);
+  async userInfo() {
+    const {ctx, service,} = this,
+      {QueryTypes,} = require('sequelize'),
+      role = await ctx.model.Role.findByPk(ctx.session.roleId);
+    if (!role) {
+      ctx.throw(500, [999, '无法获取角色信息',]);
     }
-    ctx.session.role = userInfo.roleId;
-    ctx.session.username = username;
-    ctx.session.captcha = '';
-    return userInfo;
+    if (role.delFlag === 1) {
+      ctx.throw(500, [999, '角色不存在',]);
+    }
+    const permission = role.roleKey,
+      menuInfo = await ctx.model.query('SELECT\n' +
+        '\tm.id AS id,\n' +
+        '\tr.roleKey AS roleKey,\n' +
+        '\tm.menuKey AS menuKey,\n' +
+        '\tm.menuType AS menuType,\n' +
+        '\tm.pMenuId AS pMenuId,\n' +
+        '\tm.menuName AS menuName,\n' +
+        '\tm.pageUrl AS pageUrl,\n' +
+        '\tm.url AS url,\n' +
+        '\tm.icon AS icon,\n' +
+        '\tm.sort AS sort \n' +
+        'FROM\n' +
+        '\trole r\n' +
+        '\tINNER JOIN relationship rs ON r.roleKey = rs.roleKey\n' +
+        '\tLEFT JOIN menu m ON rs.menuId = m.id \n' +
+        'WHERE\n' +
+        '\tr.id = 1 \n' +
+        'ORDER BY\n' +
+        '\tm.menuType,\n' +
+        '\tm.sort', {'bind': {'roleId': ctx.session.roleId,}, 'type': QueryTypes.SELECT,});
+    return await service.api.user.permission(menuInfo, permission);
   }
 }
 
