@@ -14,16 +14,14 @@ module.exports = () => {
       }
       token = token.replace('Bearer ', '');
       // 验证当前token
-      ctx.logger.info('token：' + token);
-      const decode = ctx.app.jwt.verify(token, ctx.app.config.jwt.secret);
-      ctx.logger.info('secret：' + ctx.app.config.jwt.secret);
-      ctx.logger.info('decode：' + decode);
-      if (!decode || !decode.username) {
-        ctx.throw(401, '没有权限，请登录');
-      }
-      if (Date.now() - decode.expire > 0) {
-        ctx.throw(401, 'Token已过期');
-      }
+      ctx.app.jwt.verify(token, ctx.app.config.jwt.secret, function (err, decode) {
+        if (err) {
+          ctx.throw(401, 'Token已过期');
+        }
+        if (!decode || !decode.username) {
+          ctx.throw(401, '没有权限，请登录');
+        }
+      });
     }
 
     if (whiteList.includes(url) || web.test(url)) {

@@ -5,11 +5,22 @@ const Service = require('egg').Service;
 class MenuService extends Service {
 
   async search() {
-    const {ctx,} = this;
-    return await ctx.model.Menu.findAll({
-      'attributes': ['id', 'pMenuId', 'menuName', 'pageUrl', 'url', 'icon', 'sort',],
-      'order': [['menuType', 'asc',], ['sort', 'asc',],],
-    });
+    const {ctx,} = this,
+      {QueryTypes,} = require('sequelize'),
+      menus = await ctx.model.query('SELECT\n' +
+        '\t`id`,\n' +
+        '\t`pMenuId`,\n' +
+        '\t`menuName`,\n' +
+        '\t`pageUrl`,\n' +
+        '\t`url`,\n' +
+        '\t`icon`,\n' +
+        '\t`sort`\n' +
+        'FROM\n' +
+        '\t`menu` AS `menu` \n' +
+        'ORDER BY\n' +
+        '\t`menu`.`menuType` ASC,\n' +
+        '\t`menu`.`sort` ASC', {'type': QueryTypes.SELECT,});
+    return this.buildTree(menus);
   }
 
   async add(menuType, pMenuId, menuName, pageUrl, url, icon) {
@@ -73,6 +84,32 @@ class MenuService extends Service {
       ctx.throw(500, [999, '无法获取到指定的菜单信息',]);
     }
     return menu;
+  }
+
+  buildTree(data) {
+    const res = [];
+    for (const item of data) {
+      if (!item.pMenuId) {
+        item.children = getNode(item.id);
+        res.push(item);
+      }
+    }
+
+    function getNode(id) {
+      const node = [];
+      for (const item of data) {
+        if (item.pMenuId === id) {
+          item.children = getNode(item.id);
+          node.push(item);
+        }
+      }
+      if (node.length === 0) {
+        return;
+      }
+      return node;
+    }
+
+    return res;
   }
 }
 
