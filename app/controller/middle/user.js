@@ -16,7 +16,7 @@ class UserController extends Controller {
       return;
     }
     const userInfo = await service.middle.user.login(username, password),
-      token = app.jwt.sign({'username': username,}, app.config.jwt.secret, {'expiresIn': 60 * 60,});
+      token = app.jwt.sign({'username': username,}, app.config.jwt.secret, {'expiresIn': 60 * 60 * 60,});
     ctx.session.roleId = userInfo.roleId;
     ctx.session.username = username;
     ctx.session.captcha = '';
