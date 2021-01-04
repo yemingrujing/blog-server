@@ -15,10 +15,10 @@ class UserController extends Controller {
       this.error('参数错误', validator);
       return;
     }
-    // if (ctx.request.body.captcha.toLocaleLowerCase() !== ctx.session.captcha) {
-    //   this.error('验证码错误', []);
-    //   return;
-    // }
+    if (ctx.request.body.captcha.toLocaleLowerCase() !== ctx.session.captcha) {
+      this.error('验证码错误', []);
+      return;
+    }
     const userInfo = await service.middle.user.login(username, password),
       token = app.jwt.sign({'username': username,}, app.config.jwt.secret, {'expiresIn': '1h',});
     ctx.session.roleId = userInfo.roleId;
