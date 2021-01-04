@@ -7,7 +7,8 @@ module.exports = () => {
   return async function auth(ctx, next) {
     const url = ctx.originalUrl,
       web = /^\/web\//;
-    let token = ctx.request.header.authorization;
+    let username = '',
+      token = ctx.request.header.authorization;
     if (!authWhiteList.includes(url)) {
       if (!token) {
         ctx.throw(401, '您需要先登陆以后才能操作');
@@ -15,7 +16,6 @@ module.exports = () => {
       token = token.replace('Bearer ', '');
 
       ctx.logger.info('token：' + token);
-      ctx.logger.info('token：' + ctx.app.config.jwt.secret);
 
       // 验证当前token
       ctx.app.jwt.verify(token, ctx.app.config.jwt.secret, function (err, decode) {
@@ -25,12 +25,16 @@ module.exports = () => {
         if (!decode || !decode.username) {
           ctx.throw(401, '没有权限，请登录');
         }
+        username = decode.username;
       });
     }
 
     if (whiteList.includes(url) || web.test(url)) {
       await next();
     } else if (ctx.session.username) {
+      if (username !== ctx.session.username) {
+        ctx.throw(401, '您需要先登陆以后才能操作');
+      }
       if (ctx.session.permission.includes(url)) {
         await next();
       } else {
