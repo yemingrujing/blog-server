@@ -7,15 +7,19 @@ module.exports = () => {
     const url = ctx.originalUrl,
       web = /^\/web\//,
       token = ctx.request.header.authorization;
+
     ctx.logger.info('url：' + url);
+
     if (whiteList.includes(url) || web.test(url)) {
       await next();
     } else if (ctx.session.username) {
       if (!token) {
         ctx.throw(401, '您需要先登陆以后才能操作');
       }
+
       ctx.logger.info('token：' + token);
       ctx.logger.info('token：' + ctx.app.config.jwt.secret);
+
       // 验证当前token
       const decode = ctx.app.jwt.verify(token, ctx.app.config.jwt.secret);
       if (!decode || !decode.userName) {

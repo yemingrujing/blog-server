@@ -15,6 +15,10 @@ class UserController extends Controller {
       this.error('参数错误', validator);
       return;
     }
+    if (ctx.request.body.captcha.toLocaleLowerCase() !== ctx.session.captcha) {
+      this.error('验证码错误', []);
+      return;
+    }
     const userInfo = await service.middle.user.login(username, password),
       token = app.jwt.sign({'username': username,}, app.config.jwt.secret, {'expiresIn': 60 * 60,});
     ctx.session.roleId = userInfo.roleId;
@@ -31,9 +35,9 @@ class UserController extends Controller {
 
   async captcha() {
     const {ctx, service,} = this,
-      captcha = await service.tool.captcha();
+      captcha = await service.util.tool.captcha();
     ctx.response.type = 'image/svg+xml';
-    this.success({'result': captcha.data,});
+    this.success(captcha.data, '获取验证码');
   }
 }
 

@@ -4,7 +4,7 @@
  * @param {Egg.Application} app - egg application
  */
 module.exports = app => {
-  const { router, controller, jwt,} = app;
+  const {router, controller, jwt,} = app;
 
   // 登录
   router.get('/', controller.home.index);
@@ -18,7 +18,7 @@ module.exports = app => {
 
   // 角色管理
   router.post('/api/role/search', jwt, controller.admin.role.search);
-  router.post('/api/role/add', jwt,controller.admin.role.add);
+  router.post('/api/role/add', jwt, controller.admin.role.add);
   router.get('/api/role/del/:id', jwt, controller.admin.role.delete);
   router.post('/api/role/edit', jwt, controller.admin.role.edit);
   router.post('/api/role/menu/add', jwt, controller.admin.role.addMenu);

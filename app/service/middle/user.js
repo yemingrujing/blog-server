@@ -9,7 +9,7 @@ class UserService extends Service {
       userInfo = await ctx.model.User.findOne({
         'where': {
           'userName': username,
-          'userPassword': ctx.helper.md5Encode(password),
+          'userPassword': password,
           'status': 0,
         },
       });
