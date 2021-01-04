@@ -78,26 +78,33 @@ class RoleService extends Service {
   }
 
   async queryRoleMenu(roleId) {
-    const {ctx,} = this,
+    const {ctx, service,} = this,
       {QueryTypes,} = require('sequelize'),
       role = await ctx.model.Role.findByPk(roleId);
     if (!role) {
       ctx.throw(500, [999, '无法获取到指定的角色信息',]);
     }
-    return await ctx.model.query('SELECT\n' +
-      '\tr.id,\n' +
+    const roleMenus = await ctx.model.query('SELECT\n' +
+      '\tm.id,\n' +
+      '\tr.id AS roleId,\n' +
       '\tr.roleKey,\n' +
       '\tr.roleName,\n' +
       '\tm.pMenuId,\n' +
       '\tm.menuName,\n' +
       '\tm.pageUrl,\n' +
-      '\tm.url \n' +
+      '\tm.url,\n' +
+      '\tm.sort \n' +
       'FROM\n' +
       '\trole r\n' +
       '\tINNER JOIN relationship rs ON r.roleKey = rs.roleKey\n' +
       '\tINNER JOIN menu m ON rs.menuId = m.id \n' +
       'WHERE\n' +
-      '\tr.id = $id', {'bind': {'id': roleId,}, 'type': QueryTypes.SELECT,});
+      '\tr.id = $id \n' +
+      'ORDER BY\n' +
+      '\tm.menuType ASC,\n' +
+      '\tm.sort ASC', {'bind': {'id': roleId,}, 'type': QueryTypes.SELECT,});
+
+    return await service.util.tool.buildTree(roleMenus);
   }
 
   async delMenu(id) {

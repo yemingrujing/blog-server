@@ -40,6 +40,32 @@ class ToolService extends Service {
     this.ctx.logger.info('3用户新增密码MD5加密：%j', str);
     return null;
   }
+
+  async buildTree(data) {
+    const res = [];
+    for (const item of data) {
+      if (!item.pMenuId) {
+        item.children = getNode(item.id);
+        res.push(item);
+      }
+    }
+
+    function getNode(id) {
+      const node = [];
+      for (const item of data) {
+        if (item.pMenuId === id) {
+          item.children = getNode(item.id);
+          node.push(item);
+        }
+      }
+      if (node.length === 0) {
+        return;
+      }
+      return node;
+    }
+
+    return res;
+  }
 }
 
 module.exports = ToolService;

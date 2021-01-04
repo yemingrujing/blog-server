@@ -5,7 +5,7 @@ const Service = require('egg').Service;
 class MenuService extends Service {
 
   async search() {
-    const {ctx,} = this,
+    const {ctx, service,} = this,
       {QueryTypes,} = require('sequelize'),
       menus = await ctx.model.query('SELECT\n' +
         '\t`id`,\n' +
@@ -20,7 +20,7 @@ class MenuService extends Service {
         'ORDER BY\n' +
         '\t`menu`.`menuType` ASC,\n' +
         '\t`menu`.`sort` ASC', {'type': QueryTypes.SELECT,});
-    return this.buildTree(menus);
+    return await service.util.tool.buildTree(menus);
   }
 
   async add(menuType, pMenuId, menuName, pageUrl, url, icon) {
@@ -84,32 +84,6 @@ class MenuService extends Service {
       ctx.throw(500, [999, '无法获取到指定的菜单信息',]);
     }
     return menu;
-  }
-
-  buildTree(data) {
-    const res = [];
-    for (const item of data) {
-      if (!item.pMenuId) {
-        item.children = getNode(item.id);
-        res.push(item);
-      }
-    }
-
-    function getNode(id) {
-      const node = [];
-      for (const item of data) {
-        if (item.pMenuId === id) {
-          item.children = getNode(item.id);
-          node.push(item);
-        }
-      }
-      if (node.length === 0) {
-        return;
-      }
-      return node;
-    }
-
-    return res;
   }
 }
 
