@@ -10,7 +10,7 @@ module.exports = app => {
   router.get('/', controller.home.index);
   router.get('/api/user/captcha', controller.middle.user.captcha);
   router.post('/api/user/login', controller.middle.user.login);
-  router.post('/api/user/userInfo', controller.middle.user.userInfo);
+  router.post('/api/user/userInfo', jwt, controller.middle.user.userInfo);
 
   // 用户管理
   router.post('/api/user/search', jwt, controller.admin.user.search);

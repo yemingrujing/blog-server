@@ -78,8 +78,8 @@ class RoleService extends Service {
   }
 
   async queryRoleMenu(roleId) {
-    const {ctx,} = this;
-    const {QueryTypes,} = require('sequelize'),
+    const {ctx,} = this,
+      {QueryTypes,} = require('sequelize'),
       role = await ctx.model.Role.findByPk(roleId);
     if (!role) {
       ctx.throw(500, [999, '无法获取到指定的角色信息',]);
