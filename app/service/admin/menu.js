@@ -23,7 +23,7 @@ class MenuService extends Service {
     return await service.util.tool.buildTree(menus);
   }
 
-  async add(menuType, pMenuId, menuName, pageUrl, url, icon) {
+  async add(menuType, pMenuId, menuName, pageUrl, url, icon, sort) {
     const {ctx,} = this;
     if (!menuName) {
       ctx.throw(500, [999, '参数不能为空',]);
@@ -41,7 +41,7 @@ class MenuService extends Service {
       menuType = 0;
     }
     const menuKey = ctx.helper.md5Encode(ctx.helper.getUUID());
-    return await ctx.model.Menu.create({menuType, menuKey, pMenuId, menuName, pageUrl, url, icon,});
+    return await ctx.model.Menu.create({menuType, menuKey, pMenuId, menuName, pageUrl, url, icon, sort,});
   }
 
   async edit(id, pMenuId, menuType, menuName, pageUrl, url, icon) {

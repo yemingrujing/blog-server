@@ -24,7 +24,13 @@ class UserController extends Controller {
     ctx.session.roleId = userInfo.roleId;
     ctx.session.username = username;
     ctx.session.captcha = '';
-    this.success(token, '登录');
+    this.success({
+      'id': userInfo.id,
+      token,
+      'account': userInfo.userName,
+      'avatar': userInfo.avatar,
+      'theme': userInfo.theme,
+    }, '登录');
   }
 
   async userInfo() {
@@ -38,6 +44,11 @@ class UserController extends Controller {
       captcha = await service.util.tool.captcha();
     ctx.response.type = 'image/svg+xml';
     this.success(captcha.data, '获取验证码');
+  }
+
+  async logout() {
+    this.ctx.session = null;
+    this.success('注销成功', '注销');
   }
 }
 

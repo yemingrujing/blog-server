@@ -29,27 +29,30 @@ class UserService extends Service {
     if (role.delFlag === 1) {
       ctx.throw(500, [999, '角色不存在',]);
     }
-    const permission = role.roleKey,
-      menuInfo = await ctx.model.query('SELECT\n' +
-        '\tm.id AS id,\n' +
-        '\tr.roleKey AS roleKey,\n' +
-        '\tm.menuKey AS menuKey,\n' +
-        '\tm.menuType AS menuType,\n' +
-        '\tm.pMenuId AS pMenuId,\n' +
-        '\tm.menuName AS menuName,\n' +
-        '\tm.pageUrl AS pageUrl,\n' +
-        '\tm.url AS url,\n' +
-        '\tm.icon AS icon,\n' +
-        '\tm.sort AS sort \n' +
-        'FROM\n' +
-        '\trole r\n' +
-        '\tINNER JOIN relationship rs ON r.roleKey = rs.roleKey\n' +
-        '\tLEFT JOIN menu m ON rs.menuId = m.id \n' +
-        'WHERE\n' +
-        '\tr.id = 1 \n' +
-        'ORDER BY\n' +
-        '\tm.menuType,\n' +
-        '\tm.sort', {'bind': {'roleId': ctx.session.roleId,}, 'type': QueryTypes.SELECT,});
+    const permission = role.roleKey;
+    let menuInfo = await ctx.model.query('SELECT\n' +
+      '\tm.id AS id,\n' +
+      '\tr.roleKey AS roleKey,\n' +
+      '\tm.menuKey AS menuKey,\n' +
+      '\tm.menuType AS menuType,\n' +
+      '\tm.pMenuId AS pMenuId,\n' +
+      '\tm.menuName AS menuName,\n' +
+      '\tm.pageUrl AS pageUrl,\n' +
+      '\tm.url AS url,\n' +
+      '\tm.icon AS icon,\n' +
+      '\tm.sort AS sort \n' +
+      'FROM\n' +
+      '\trole r\n' +
+      '\tINNER JOIN relationship rs ON r.roleKey = rs.roleKey\n' +
+      '\tLEFT JOIN menu m ON rs.menuId = m.id \n' +
+      'WHERE\n' +
+      '\tr.id = 1 \n' +
+      'ORDER BY\n' +
+      '\tm.menuType,\n' +
+      '\tm.sort', {'bind': {'roleId': ctx.session.roleId,}, 'type': QueryTypes.SELECT,})
+      .then((result) => {
+        return result;
+      });
     return await service.api.user.permission(menuInfo, permission);
   }
 }

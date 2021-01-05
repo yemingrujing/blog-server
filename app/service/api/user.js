@@ -22,7 +22,6 @@ class UserService extends Service {
     permissions.map(id => {
       const targetRoute = menus.filter(item => id === item.id)[0];
       roles.push({
-        'url': targetRoute.url,
         'title': targetRoute.menuName,
         'rKey': targetRoute.roleKey,
         'mKey': targetRoute.menuKey,
@@ -31,6 +30,7 @@ class UserService extends Service {
         'parentId': targetRoute.pMenuId,
         'type': targetRoute.menuType,
         'id': targetRoute.id,
+        'key': targetRoute.pageUrl,
       });
       return targetRoute.id;
     });

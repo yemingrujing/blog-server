@@ -11,6 +11,7 @@ module.exports = app => {
   router.get('/api/user/captcha', controller.middle.user.captcha);
   router.post('/api/user/login', controller.middle.user.login);
   router.post('/api/user/userInfo', jwt, controller.middle.user.userInfo);
+  router.post('/api/user/logout', jwt, controller.middle.user.logout);
 
   // 用户管理
   router.post('/api/user/search', jwt, controller.admin.user.search);

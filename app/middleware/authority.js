@@ -35,6 +35,7 @@ module.exports = () => {
       if (username !== ctx.session.username) {
         ctx.throw(401, '您需要先登陆以后才能操作');
       }
+      ctx.logger.info('permission：' + ctx.session.permission);
       if (ctx.session.permission.includes(url)) {
         await next();
       } else {

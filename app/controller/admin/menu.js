@@ -12,7 +12,7 @@ class MenuController extends Controller {
   async add() {
     const {service, ctx,} = this,
       param = {...ctx.request.body,},
-      menu = await service.admin.menu.add(param.menuType, param.pMenuId, param.menuName, param.pageUrl, param.url, param.sort);
+      menu = await service.admin.menu.add(param.menuType, param.pMenuId, param.menuName, param.pageUrl, param.url, param.icon, param.sort);
     this.success(menu, '添加');
   }
 
