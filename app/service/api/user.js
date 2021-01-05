@@ -21,17 +21,19 @@ class UserService extends Service {
     permissions = Array.from(new Set(permissions));
     permissions.map(id => {
       const targetRoute = menus.filter(item => id === item.id)[0];
-      roles.push({
-        'title': targetRoute.menuName,
-        'rKey': targetRoute.roleKey,
-        'mKey': targetRoute.menuKey,
-        'icon': targetRoute.icon,
-        'sort': targetRoute.sort,
-        'parentId': targetRoute.pMenuId,
-        'type': targetRoute.menuType,
-        'id': targetRoute.id,
-        'key': targetRoute.pageUrl,
-      });
+      if (targetRoute.pageUrl !== null) {
+        roles.push({
+          'title': targetRoute.menuName,
+          'rKey': targetRoute.roleKey,
+          'mKey': targetRoute.menuKey,
+          'icon': targetRoute.icon,
+          'sort': targetRoute.sort,
+          'parentId': targetRoute.pMenuId,
+          'type': targetRoute.menuType,
+          'id': targetRoute.id,
+          'key': targetRoute.pageUrl,
+        });
+      }
       return targetRoute.id;
     });
     return roles;
