@@ -32,7 +32,7 @@ class RoleService extends Service {
     ctx.throw(500, [999, '用户新增失败：' + roleName,]);
   }
 
-  async edit(id, roleName) {
+  async edit(id, roleName, delFlag) {
     const {ctx,} = this,
       role = await ctx.model.Role.findByPk(id);
     if (!role) {
@@ -41,7 +41,10 @@ class RoleService extends Service {
     if (role.delFlag === 1) {
       ctx.throw(500, [999, '当前角色已被删除',]);
     }
-    return await role.update({roleName,});
+    if (!(delFlag === 0 || delFlag === 1)) {
+      ctx.throw(500, [1004, '参数错误',]);
+    }
+    return await role.update({roleName, delFlag,});
   }
 
   async delete(id) {

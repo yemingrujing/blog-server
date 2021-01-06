@@ -17,6 +17,8 @@ module.exports = app => {
   router.post('/api/users/search', jwt, controller.admin.user.search);
   router.post('/api/users/add', jwt, controller.admin.user.add);
   router.post('/api/users/roles', jwt, controller.admin.user.roles);
+  router.post('/api/users/onOff', jwt, controller.admin.user.onOff);
+  router.post('/api/users/del', jwt, controller.admin.user.del);
 
   // 角色管理
   router.post('/api/role/search', jwt, controller.admin.role.search);

@@ -20,8 +20,11 @@ class RoleController extends Controller {
 
   async edit() {
     const {service, ctx,} = this,
-      param = {...ctx.request.body,},
-      role = await service.admin.role.edit(param.id, param.roleName);
+      param = {...ctx.request.body,};
+    if (!param.roleName || !param.delFlag) {
+      this.error('参数不能为空', []);
+    }
+    const role = await service.admin.role.edit(param.id, param.roleName, param.delFlag);
     this.success(role, '编辑');
   }
 

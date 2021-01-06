@@ -13,6 +13,7 @@ class MenuService extends Service {
         '\t`menuName`,\n' +
         '\t`pageUrl`,\n' +
         '\t`url`,\n' +
+        '\t`menuType`,\n' +
         '\t`icon`,\n' +
         '\t`sort`\n' +
         'FROM\n' +

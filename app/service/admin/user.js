@@ -9,7 +9,7 @@ class UserService extends Service {
       list = await ctx.model.User.findAndCountAll({
         'offset': (page * limit) - limit,
         'limit': limit,
-        'attributes': ['id', 'userName', 'avatar', 'status', 'nickName', 'roleId', 'updateTime', 'remark',],
+        'attributes': ['id', 'userName', 'avatar', 'status', 'nickName', 'roleId', 'updateTime', 'remark', 'userEmail', 'userTelephoneNumber',],
         'where': param,
         'order': [['userRegistTime', 'desc',],],
       });
@@ -21,7 +21,7 @@ class UserService extends Service {
 
   async add(req) {
     const {ctx,} = this,
-      {userIp, userName, roleId, userEmail, userTelephoneNumber, nickName,} = req.param,
+      {userIp, password, userName, roleId, userEmail, userTelephoneNumber, nickName,} = req.param,
       count = await ctx.model.User.count({
         'where': {
           'userName': username,
@@ -36,11 +36,10 @@ class UserService extends Service {
       theme = req.param.theme || '#304156',
       avatar = req.param.avatar || 'https://raw.githubusercontent.com/SpectreAlan/images/master/blog/logo.png',
       status = 0,
-      userPassword = ctx.helper.md5Encode(req.param.userPassword),
       user = await ctx.model.User.create({
         userIp,
         userName,
-        userPassword,
+        'userPassword': password,
         roleId,
         userEmail,
         avatar,
@@ -55,6 +54,48 @@ class UserService extends Service {
       return user.id;
     }
     ctx.throw(500, [999, '用户新增失败：' + req.param,]);
+  }
+
+  async edit(req) {
+    const {ctx,} = this,
+      {id, password, roleId, userEmail, userTelephoneNumber, nickName, status,} = req.param,
+      user = await ctx.model.User.findByPk(id);
+    if (!user) {
+      ctx.throw(500, [1003, '用户不存在',]);
+    }
+    const updateTime = ctx.helper.getNowTime(),
+      avatar = req.param.avatar || 'https://raw.githubusercontent.com/SpectreAlan/images/master/blog/logo.png';
+    return user.update({
+      roleId,
+      userEmail,
+      userTelephoneNumber,
+      nickName,
+      status,
+      avatar,
+      'userPassword': password,
+      updateTime,
+    });
+  }
+
+  async onOff(id, status) {
+    const {ctx,} = this;
+    if (!(status === 0 || status === 1)) {
+      ctx.throw(500, [1004, '参数错误',]);
+    }
+    const user = await ctx.model.User.findByPk(id);
+    if (!user) {
+      ctx.throw(500, [1003, '用户不存在',]);
+    }
+    return user.update({status,});
+  }
+
+  async del(id) {
+    const {ctx,} = this,
+      user = await ctx.model.User.findByPk(id);
+    if (!user) {
+      ctx.throw(500, [1003, '用户不存在',]);
+    }
+    return user.destroy();
   }
 
   async roles() {

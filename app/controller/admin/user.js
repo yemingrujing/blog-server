@@ -22,6 +22,31 @@ class UserController extends Controller {
     this.success(result, '添加');
   }
 
+  async edit() {
+    const {service, ctx,} = this,
+      param = {...ctx.request.body,},
+      result = await service.admin.user.edit({param,});
+    this.success(result, '更新');
+  }
+
+  async onOff() {
+    const {service, ctx,} = this,
+      id = ctx.request.body.id,
+      status = ctx.request.body.status;
+    if (!status || !id) {
+      this.error('参数不能为空', []);
+    }
+    const result = await service.admin.user.onOff(id, status);
+    this.success(result, '');
+  }
+
+  async del() {
+    const {service, ctx,} = this,
+      id = ctx.request.body.id,
+      result = await service.admin.user.del(id);
+    this.success(result, '删除');
+  }
+
   async roles() {
     const {service, ctx,} = this,
       param = {...ctx.request.body,},
