@@ -14,7 +14,8 @@ module.exports = {
    */
   getNowTime(format = 'YYYY-MM-DD HH:mm:ss', t) {
     const time = t ? new Date(t) : new Date();
-    return moment(time).format(format);
+    return moment(time)
+      .format(format);
   },
 
   /**
@@ -22,7 +23,8 @@ module.exports = {
    * @return {*}
    */
   getUUID() {
-    return uuidV1().replace(/-/g, '');
+    return uuidV1()
+      .replace(/-/g, '');
   },
 
   /**
@@ -32,7 +34,9 @@ module.exports = {
    */
   md5Encode(str) {
     if (str) {
-      const md5Str = crypto.createHash('md5').update(str).digest('hex');
+      const md5Str = crypto.createHash('md5')
+        .update(str)
+        .digest('hex');
       return md5Str;
     }
     return null;
@@ -61,9 +65,9 @@ module.exports = {
   fail(ctx, res) {
     ctx.body = {
       'code': res.code,
-      'msg': res.msg,
+      'errMsg': res.msg,
       'data': res.data,
     };
-    ctx.status = 500;
+    ctx.status;
   },
 };

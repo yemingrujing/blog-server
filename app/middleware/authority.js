@@ -15,15 +15,13 @@ module.exports = () => {
       }
       token = token.replace('Bearer ', '');
 
-      ctx.logger.info('token：' + token);
-
       // 验证当前token
       ctx.app.jwt.verify(token, ctx.app.config.jwt.secret, function (err, decode) {
         if (err) {
-          ctx.throw(401, 'Token已过期');
+          ctx.throw(401, [401, 'Token已过期',]);
         }
         if (!decode || !decode.username) {
-          ctx.throw(401, '没有权限，请登录');
+          ctx.throw(401, [401, '没有权限，请登录',]);
         }
         username = decode.username;
       });
@@ -33,7 +31,7 @@ module.exports = () => {
       await next();
     } else if (ctx.session.username) {
       if (username !== ctx.session.username) {
-        ctx.throw(401, '您需要先登陆以后才能操作');
+        ctx.throw(401, [401, '您需要先登陆以后才能操作',]);
       }
       ctx.logger.info('permission：' + ctx.session.permission);
       if (ctx.session.permission.includes(url)) {
@@ -42,7 +40,7 @@ module.exports = () => {
         ctx.body = {'code': 500, 'msg': '暂无权限执行此操作', 'data': null,};
       }
     } else {
-      ctx.throw(401, '您需要先登陆以后才能操作');
+      ctx.throw(401, [401, '您需要先登陆以后才能操作',]);
     }
   };
 };

@@ -40,6 +40,10 @@ class MenuService extends Service {
     if (!menuType) {
       menuType = 0;
     }
+    const count = await ctx.model.Menu.count({'where': {menuName, menuType,},});
+    if (count > 0) {
+      ctx.throw(500, [999, menuName + '菜单已存在',]);
+    }
     const menuKey = ctx.helper.md5Encode(ctx.helper.getUUID());
     return await ctx.model.Menu.create({menuType, menuKey, pMenuId, menuName, pageUrl, url, icon, sort,});
   }
