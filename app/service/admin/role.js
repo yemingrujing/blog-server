@@ -4,14 +4,19 @@ const Service = require('egg').Service;
 
 class RoleService extends Service {
 
-  async search() {
-    const {ctx,} = this;
-    return await ctx.model.Role.findAll(
-      {
-        'attributes': ['id', 'roleName', 'roleKey',],
-        'where': {'delFlag': 0,},
-        'order': [['createTime', 'desc',],],
-      });
+  async search(limit = 10, page = 1) {
+    const {ctx,} = this,
+      list = await ctx.model.Role.findAndCountAll(
+        {
+          'offset': (page * limit) - limit,
+          'limit': limit,
+          'attributes': ['id', 'roleName', 'roleKey', 'delFlag', 'createTime',],
+          'order': [['createTime', 'desc',],],
+        });
+    return {
+      'total': list.count,
+      'list': list.rows,
+    };
   }
 
   async add(roleName) {

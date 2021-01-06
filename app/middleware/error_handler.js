@@ -7,7 +7,7 @@ module.exports = () => {
     } catch (err) {
       // 所有的异常都在 app 上触发一个 error 事件，框架会记录一条错误日志
       ctx.app.emit('error', err, ctx);
-      let status = err.status || 500,
+      let status = !err.status ? 500 : err.status,
         error;
       if (status === 500) {
         if (ctx.app.config.env === 'prod') {
@@ -19,8 +19,9 @@ module.exports = () => {
       } else {
         error = err.message;
       }
-
-      ctx.helper.fail(ctx, {'code': status, 'msg': error, 'data': [],});
+      status = !isNaN(Number(status)) ? status : 500;
+      ctx.status = status;
+      ctx.helper.fail(ctx, {'code': status, 'msg': !error ? err.name : error, 'data': [],});
     }
   };
 };

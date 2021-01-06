@@ -14,8 +14,9 @@ module.exports = app => {
   router.post('/api/user/logout', jwt, controller.middle.user.logout);
 
   // 用户管理
-  router.post('/api/user/search', jwt, controller.admin.user.search);
-  router.post('/api/user/add', jwt, controller.admin.user.add);
+  router.post('/api/users/search', jwt, controller.admin.user.search);
+  router.post('/api/users/add', jwt, controller.admin.user.add);
+  router.post('/api/users/roles', jwt, controller.admin.user.roles);
 
   // 角色管理
   router.post('/api/role/search', jwt, controller.admin.role.search);

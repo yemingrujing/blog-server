@@ -4,9 +4,11 @@ const Controller = require('../base_controller');
 
 class RoleController extends Controller {
   async search() {
-    const {service,} = this,
-      list = await service.admin.role.search();
-    this.success(list, '查询');
+    const {ctx, service,} = this,
+      limit = Number(ctx.request.body.limit) || 10,
+      page = Number(ctx.request.body.page) || 1,
+      result = await service.admin.role.search(limit, page);
+    this.success(result, '查询');
   }
 
   async add() {

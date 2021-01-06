@@ -7,10 +7,11 @@ class UserController extends Controller {
     const {ctx, service,} = this,
       limit = Number(ctx.request.body.limit) || 10,
       page = Number(ctx.request.body.page) || 1,
-      query = {
-        'userName': {'$like': `%${ctx.request.body.userName}%`,},
-      },
-      result = await service.admin.user.search(query, limit, page);
+      query = {};
+    if (ctx.request.body.userName) {
+      query.userName = {'$like': `%${ctx.request.body.userName}%`,};
+    }
+    const result = await service.admin.user.search(query, limit, page);
     this.success(result, '查询');
   }
 
@@ -19,6 +20,13 @@ class UserController extends Controller {
       param = {...ctx.request.body,},
       result = await service.admin.user.add({param,});
     this.success(result, '添加');
+  }
+
+  async roles() {
+    const {service, ctx,} = this,
+      param = {...ctx.request.body,},
+      result = await service.admin.user.roles({param,});
+    this.success(result, '查询角色');
   }
 }
 

@@ -4,15 +4,19 @@ const Service = require('egg').Service;
 
 class UserService extends Service {
 
-  async search(param, limit = 0, page = 0) {
-    const {ctx,} = this;
-    return await ctx.model.User.findAndCountAll({
-      'offset': (page * limit) - limit,
-      'limit': limit,
-      'attributes': ['id', 'userName', 'avatar', 'status', 'nickName', 'roleId', 'updateTime', 'remark',],
-      'where': param,
-      'order': [['userRegistTime', 'desc',],],
-    });
+  async search(param, limit = 10, page = 1) {
+    const {ctx,} = this,
+      list = await ctx.model.User.findAndCountAll({
+        'offset': (page * limit) - limit,
+        'limit': limit,
+        'attributes': ['id', 'userName', 'avatar', 'status', 'nickName', 'roleId', 'updateTime', 'remark',],
+        'where': param,
+        'order': [['userRegistTime', 'desc',],],
+      });
+    return {
+      'total': list.count,
+      'list': list.rows,
+    };
   }
 
   async add(req) {
@@ -51,6 +55,15 @@ class UserService extends Service {
       return user.id;
     }
     ctx.throw(500, [999, '用户新增失败：' + req.param,]);
+  }
+
+  async roles() {
+    const {ctx,} = this;
+    return await ctx.model.Role.findAll({
+      'attributes': ['id', 'roleName',],
+      'where': {'delFlag': 0,},
+      'order': [['createTime', 'asc',],],
+    });
   }
 }
 
