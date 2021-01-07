@@ -34,10 +34,10 @@ module.exports = appInfo => {
     'sequelize': {
       'dialect': 'mysql',
       'database': 'db_blog', //数据库名
-      'host': '39.105.75.88',
+      'host': '',
       'port': '3306',
-      'username': 'hive', //账号
-      'password': 'q123456789', //密码
+      'username': '', //账号
+      'password': '', //密码
       'define': { // model的全局配置
         'timestamps': false, // 添加create,update,delete时间戳
         'paranoid': true, // 添加软删除
