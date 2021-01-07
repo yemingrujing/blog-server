@@ -7,7 +7,8 @@ class RoleController extends Controller {
     const {ctx, service,} = this,
       limit = Number(ctx.request.body.limit) || 10,
       page = Number(ctx.request.body.page) || 1,
-      result = await service.admin.role.search(limit, page);
+      roleName = ctx.request.body.roleName,
+      result = await service.admin.role.search(limit, page, roleName);
     this.success(result, '查询');
   }
 

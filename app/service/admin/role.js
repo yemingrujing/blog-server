@@ -4,20 +4,22 @@ const Service = require('egg').Service;
 
 class RoleService extends Service {
 
-  async search(limit = 10, page = 1) {
+  async search(limit = 10, page = 1, roleName = null) {
     const {ctx,} = this,
-      {QueryTypes,} = require('sequelize'),
-      list = await ctx.model.query('SELECT\n' +
-        '\tr.id,\n' +
-        '\tr.roleName,\n' +
-        '\tr.roleKey,\n' +
-        '\tr.delFlag,\n' +
-        '\tr.createTime,\n' +
-        '\tGROUP_CONCAT( m.id SEPARATOR \',\' ) AS menuIds\n' +
-        'FROM\n' +
-        '\trole r\n' +
-        '\tLEFT JOIN relationship rs ON r.roleKey = rs.roleKey\n' +
-        '\tLEFT JOIN menu m ON rs.menuId = m.id \n' +
+      {QueryTypes,} = require('sequelize');
+    ctx.logger.info('roleName：' + roleName);
+    const list = await ctx.model.query('SELECT\n' +
+      '\tr.id,\n' +
+      '\tr.roleName,\n' +
+      '\tr.roleKey,\n' +
+      '\tr.delFlag,\n' +
+      '\tr.createTime,\n' +
+      '\tGROUP_CONCAT( m.id SEPARATOR \',\' ) AS menuIds\n' +
+      'FROM\n' +
+      '\trole r\n' +
+      '\tLEFT JOIN relationship rs ON r.roleKey = rs.roleKey\n' +
+      '\tLEFT JOIN menu m ON rs.menuId = m.id \n' +
+      (!roleName ? '\t' : ('WHERE r.roleName like \'%' + roleName + '%\'\n')) +
         'GROUP BY\n' +
         '\tr.id \n' +
         'ORDER BY\n' +
