@@ -13,8 +13,16 @@ class RoleController extends Controller {
 
   async add() {
     const {service, ctx,} = this,
-      param = {...ctx.request.body,},
-      role = service.admin.role.add(param.roleName);
+      param = {...ctx.request.body,};
+    let delFlag = param.delFlag;
+    if (!delFlag) {
+      delFlag = 0;
+    }
+    if (!param.menuIds) {
+      this.error('菜单不能为空', []);
+    }
+    let menuIds = param.menuIds.split(',');
+    const role = service.admin.role.add(param.roleName, delFlag, menuIds);
     this.success(role, '添加');
   }
 
@@ -24,7 +32,14 @@ class RoleController extends Controller {
     if (!param.roleName || !param.delFlag) {
       this.error('参数不能为空', []);
     }
-    const role = await service.admin.role.edit(param.id, param.roleName, param.delFlag);
+    if (!(param.delFlag === 0 || param.delFlag === 1)) {
+      this.error('状态不能为空', []);
+    }
+    if (!param.menuIds) {
+      this.error('菜单不能为空', []);
+    }
+    let menuIds = param.menuIds ? param.menuIds.split(',') : [];
+    const role = await service.admin.role.edit(param.id, param.roleName, param.delFlag, menuIds);
     this.success(role, '编辑');
   }
 
@@ -33,27 +48,6 @@ class RoleController extends Controller {
       param = {...ctx.request.body,},
       role = await service.admin.role.delete(param.id);
     this.success(role, '删除');
-  }
-
-  async addMenu() {
-    const {service, ctx,} = this,
-      param = {...ctx.request.body,},
-      relationship = await service.admin.role.addMenu(param.roleId, param.menuIds);
-    this.success(relationship, '添加');
-  }
-
-  async queryRoleMenu() {
-    const {service, ctx,} = this,
-      param = {...ctx.request.body,},
-      relationship = await service.admin.role.queryRoleMenu(param.id);
-    this.success(relationship, '查询');
-  }
-
-  async delMenu() {
-    const {service, ctx,} = this,
-      param = {...ctx.request.body,},
-      relationship = await service.admin.role.delMenu(param.id);
-    this.success(relationship, '删除');
   }
 }
 

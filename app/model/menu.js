@@ -44,6 +44,10 @@ module.exports = app => {
         'allowNull': false,
         'defaultValue': '1',
       },
+      'remark': {
+        'type': DataTypes.STRING(255),
+        'allowNull': false,
+      },
     }, {
       'tableName': 'menu',
     });

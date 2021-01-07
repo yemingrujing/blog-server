@@ -8,19 +8,20 @@ class MenuService extends Service {
     const {ctx, service,} = this,
       {QueryTypes,} = require('sequelize'),
       menus = await ctx.model.query('SELECT\n' +
-        '\t`id`,\n' +
-        '\t`pMenuId`,\n' +
-        '\t`menuName`,\n' +
-        '\t`pageUrl`,\n' +
-        '\t`url`,\n' +
-        '\t`menuType`,\n' +
-        '\t`icon`,\n' +
-        '\t`sort`\n' +
+        '\tm.`id`,\n' +
+        '\tm.`pMenuId`,\n' +
+        '\tm.`menuName`,\n' +
+        '\tm.`pageUrl`,\n' +
+        '\tm.`url`,\n' +
+        '\tm.`menuType`,\n' +
+        '\tm.`icon`,\n' +
+        '\tm.`sort`,\n' +
+        '\t( SELECT menuName FROM menu WHERE id = m.`pMenuId` ) AS parentName \n' +
         'FROM\n' +
-        '\t`menu` AS `menu` \n' +
+        '\tmenu AS m \n' +
         'ORDER BY\n' +
-        '\t`menu`.`menuType` ASC,\n' +
-        '\t`menu`.`sort` ASC', {'type': QueryTypes.SELECT,});
+        '\tm.`menuType` ASC,\n' +
+        '\tm.`sort` ASC', {'type': QueryTypes.SELECT,});
     return await service.util.tool.buildTree(menus);
   }
 
@@ -49,7 +50,7 @@ class MenuService extends Service {
     return await ctx.model.Menu.create({menuType, menuKey, pMenuId, menuName, pageUrl, url, icon, sort,});
   }
 
-  async edit(id, pMenuId, menuType, menuName, pageUrl, url, icon) {
+  async edit(id, pMenuId, menuType, menuName, pageUrl, url, icon, sort) {
     const {ctx,} = this;
     if (!menuName) {
       ctx.throw(500, [999, '参数不能为空',]);
@@ -70,7 +71,7 @@ class MenuService extends Service {
     if (!menuType) {
       menuType = 0;
     }
-    return await menu.update({pMenuId, menuType, menuName, pageUrl, url, icon,});
+    return await menu.update({pMenuId, menuType, menuName, pageUrl, url, icon, sort,});
   }
 
   async delete(id) {
@@ -78,6 +79,10 @@ class MenuService extends Service {
       menu = await ctx.model.Menu.findByPk(id);
     if (!menu) {
       ctx.throw(500, [999, '无法获取到指定的菜单信息',]);
+    }
+    const count = await ctx.model.Relationship.count({'where': {'menuId': id,},});
+    if (count > 0) {
+      ctx.throw(500, [999, '请先与角色解绑再删除',]);
     }
     return await menu.destroy();
   }
