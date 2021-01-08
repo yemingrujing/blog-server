@@ -25,7 +25,7 @@ class MenuService extends Service {
     return await service.util.tool.buildTree(menus);
   }
 
-  async add(menuType, pMenuId, menuName, pageUrl, url, icon, sort) {
+  async add(menuType, pMenuId, menuName, pageUrl, url, icon, sort, remark) {
     const {ctx,} = this;
     if (!menuName) {
       ctx.throw(500, [999, '参数不能为空',]);
@@ -47,10 +47,10 @@ class MenuService extends Service {
       ctx.throw(500, [999, menuName + '菜单已存在',]);
     }
     const menuKey = ctx.helper.md5Encode(ctx.helper.getUUID());
-    return await ctx.model.Menu.create({menuType, menuKey, pMenuId, menuName, pageUrl, url, icon, sort,});
+    return await ctx.model.Menu.create({menuType, menuKey, pMenuId, menuName, pageUrl, url, icon, sort, remark,});
   }
 
-  async edit(id, pMenuId, menuType, menuName, pageUrl, url, icon, sort) {
+  async edit(id, pMenuId, menuType, menuName, pageUrl, url, icon, sort, remark) {
     const {ctx,} = this;
     if (!menuName) {
       ctx.throw(500, [999, '参数不能为空',]);
@@ -71,7 +71,7 @@ class MenuService extends Service {
     if (!menuType) {
       menuType = 0;
     }
-    return await menu.update({pMenuId, menuType, menuName, pageUrl, url, icon, sort,});
+    return await menu.update({pMenuId, menuType, menuName, pageUrl, url, icon, sort, remark,});
   }
 
   async delete(id) {
@@ -80,9 +80,13 @@ class MenuService extends Service {
     if (!menu) {
       ctx.throw(500, [999, '无法获取到指定的菜单信息',]);
     }
-    const count = await ctx.model.Relationship.count({'where': {'menuId': id,},});
+    let count = await ctx.model.Relationship.count({'where': {'menuId': id,},});
     if (count > 0) {
       ctx.throw(500, [999, '请先与角色解绑再删除',]);
+    }
+    count = await ctx.model.Menu.count({'where': {'pMenuId': id,},});
+    if (count > 0) {
+      ctx.throw(500, [999, '请先删除子菜单或按钮',]);
     }
     return await menu.destroy();
   }

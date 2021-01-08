@@ -95,6 +95,9 @@ class UserService extends Service {
     if (!user) {
       ctx.throw(500, [1003, '用户不存在',]);
     }
+    if (userInfo.status === 0) {
+      ctx.throw(500, [999, '请先禁用用户再删除',]);
+    }
     return user.destroy();
   }
 

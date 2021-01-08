@@ -16,6 +16,9 @@ class UserService extends Service {
     if (!userInfo) {
       ctx.throw(401, '登录失败，用户名/密码错误');
     }
+    if (userInfo.status === 0) {
+      ctx.throw(401, '用户已被禁用，请联系管理员');
+    }
     return userInfo;
   }
 
@@ -46,7 +49,7 @@ class UserService extends Service {
       '\tINNER JOIN relationship rs ON r.roleKey = rs.roleKey\n' +
       '\tLEFT JOIN menu m ON rs.menuId = m.id \n' +
       'WHERE\n' +
-      '\tr.id = 1 \n' +
+      '\tr.id = $roleId \n' +
       'ORDER BY\n' +
       '\tm.menuType,\n' +
       '\tm.sort', {'bind': {'roleId': ctx.session.roleId,}, 'type': QueryTypes.SELECT,})
