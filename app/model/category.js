@@ -22,8 +22,8 @@ module.exports = app => {
         'type': DataTypes.TEXT,
         'allowNull': false,
       },
-      'parentCategoryId': {
-        'type': DataTypes.INTEGER,
+      'createTime': {
+        'type': DataTypes.DATE,
         'allowNull': false,
       },
     }, {

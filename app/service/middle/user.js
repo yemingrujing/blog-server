@@ -16,7 +16,7 @@ class UserService extends Service {
     if (!userInfo) {
       ctx.throw(401, '登录失败，用户名/密码错误');
     }
-    if (userInfo.status === 0) {
+    if (userInfo.status === 1) {
       ctx.throw(401, '用户已被禁用，请联系管理员');
     }
     return userInfo;

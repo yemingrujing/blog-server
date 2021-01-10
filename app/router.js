@@ -27,6 +27,20 @@ module.exports = app => {
   router.post('/api/role/del', jwt, controller.admin.role.delete);
   router.post('/api/role/edit', jwt, controller.admin.role.edit);
 
+  // 分类管理
+  router.post('/api/category/search', jwt, controller.blog.category.search);
+  router.post('/api/category/add', jwt, controller.blog.category.add);
+  router.post('/api/category/del', jwt, controller.blog.category.delete);
+  router.post('/api/category/edit', jwt, controller.blog.category.edit);
+  router.post('/api/category/artSearch', jwt, controller.blog.category.artSearch);
+
+  // 标签管理
+  router.post('/api/tag/search', jwt, controller.blog.tag.search);
+  router.post('/api/tag/add', jwt, controller.blog.tag.add);
+  router.post('/api/tag/del', jwt, controller.blog.tag.delete);
+  router.post('/api/tag/edit', jwt, controller.blog.tag.edit);
+  router.post('/api/tag/artSearch', jwt, controller.blog.tag.artSearch);
+
   // 菜单管理
   router.post('/api/menu/search', jwt, controller.admin.menu.search);
   router.post('/api/menu/add', jwt, controller.admin.menu.add);

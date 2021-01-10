@@ -22,6 +22,10 @@ module.exports = app => {
         'type': DataTypes.TEXT,
         'allowNull': false,
       },
+      'createTime': {
+        'type': DataTypes.DATE,
+        'allowNull': false,
+      },
     }, {
       'tableName': 'tag',
     });
