@@ -99,8 +99,6 @@ class RoleService extends Service {
     // 并发操作，循环用for
     menuIds.map((menuId) => {
       let index = tMenuIds.indexOf(Number(menuId));
-      ctx.logger.info('menuId：' + menuId);
-      ctx.logger.info('index：' + index);
       if (index > -1) {
         tMenuIds.splice(index, 1);
       } else {
