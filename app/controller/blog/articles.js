@@ -1,4 +1,4 @@
-'use staict';
+'use strict';
 
 const Controller = require('../base_controller');
 
@@ -8,18 +8,17 @@ class ArticlesController extends Controller {
     const {ctx, service,} = this,
       limit = Number(ctx.request.body.limit) || 10,
       page = Number(ctx.request.body.page) || 1,
-      query = {};
-    if (ctx.request.body.articleTitle) {
-      query.articleTitle = {'$like': `%${ctx.request.body.articleTitle}%`,};
-    }
-    const result = await service.blog.articles.search(query, limit, page);
+      articleTitle = ctx.request.body.articleTitle,
+      result = await service.blog.articles.search(articleTitle, limit, page);
     this.success(result, '查询');
   }
 
   async add() {
-    const {ctx,} = this,
+    const {ctx, service,} = this,
       param = {...ctx.request.body,},
       result = await service.blog.articles.add(param);
     this.success(result, '新增');
   }
 }
+
+module.exports = ArticlesController;

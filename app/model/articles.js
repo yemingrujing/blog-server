@@ -1,5 +1,7 @@
 'use strict';
 
+const moment = require('moment');
+
 module.exports = app => {
   const DataTypes = app.Sequelize,
 
@@ -33,10 +35,16 @@ module.exports = app => {
       'articleViews': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
+        'defaultValue': () => {
+          return '0';
+        },
       },
       'articleCommentCount': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
+        'defaultValue': () => {
+          return '0';
+        },
       },
       'articleDate': {
         'type': DataTypes.DATE,
@@ -45,6 +53,9 @@ module.exports = app => {
       'updateTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
+        'defaultValue': () => {
+          return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+        },
       },
       'status': {
         'type': DataTypes.INTEGER,
@@ -58,6 +69,9 @@ module.exports = app => {
       'createTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
+        'defaultValue': () => {
+          return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+        },
       },
     }, {
       'tableName': 'articles',

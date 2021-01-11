@@ -48,4 +48,8 @@ module.exports = app => {
   router.post('/api/menu/add', jwt, controller.admin.menu.add);
   router.post('/api/menu/del', jwt, controller.admin.menu.delete);
   router.post('/api/menu/edit', jwt, controller.admin.menu.edit);
+
+  // 博客管理
+  router.post('/api/articles/search', jwt, controller.blog.articles.search);
+  router.post('/api/articles/add', jwt, controller.blog.articles.add);
 };

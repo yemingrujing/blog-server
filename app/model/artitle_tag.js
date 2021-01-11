@@ -1,5 +1,7 @@
 'use strict';
 
+const moment = require('moment');
+
 module.exports = app => {
   const DataTypes = app.Sequelize,
 
@@ -21,6 +23,9 @@ module.exports = app => {
       'createTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
+        'defaultValue': () => {
+          return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+        },
       },
     }, {
       'tableName': 'artitle_tag',
