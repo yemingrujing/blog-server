@@ -33,6 +33,7 @@ module.exports = app => {
   router.post('/api/category/del', jwt, controller.blog.category.delete);
   router.post('/api/category/edit', jwt, controller.blog.category.edit);
   router.post('/api/category/artSearch', jwt, controller.blog.category.artSearch);
+  router.post('/api/category/belong', jwt, controller.blog.category.belong);
 
   // 标签管理
   router.post('/api/tag/search', jwt, controller.blog.tag.search);
@@ -40,6 +41,7 @@ module.exports = app => {
   router.post('/api/tag/del', jwt, controller.blog.tag.delete);
   router.post('/api/tag/edit', jwt, controller.blog.tag.edit);
   router.post('/api/tag/artSearch', jwt, controller.blog.tag.artSearch);
+  router.post('/api/tag/belong', jwt, controller.blog.tag.belong);
 
   // 菜单管理
   router.post('/api/menu/search', jwt, controller.admin.menu.search);

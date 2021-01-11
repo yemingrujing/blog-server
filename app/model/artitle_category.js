@@ -10,10 +10,13 @@ module.exports = app => {
         'primaryKey': true,
         'autoIncrement': true,
       },
+      'artId': {
+        'type': DataTypes.INTEGER,
+        'allowNull': false,
+      },
       'categoryId': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
-        'primaryKey': true,
       },
       'createTime': {
         'type': DataTypes.DATE,

@@ -10,10 +10,13 @@ module.exports = app => {
         'primaryKey': true,
         'autoIncrement': true,
       },
+      'artId': {
+        'type': DataTypes.INTEGER,
+        'allowNull': false,
+      },
       'tagId': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
-        'primaryKey': true,
       },
       'createTime': {
         'type': DataTypes.DATE,
@@ -23,7 +26,7 @@ module.exports = app => {
       'tableName': 'artitle_tag',
     });
 
-  Model.associate = function() {
+  Model.associate = function () {
 
   };
 

@@ -15,7 +15,15 @@ module.exports = app => {
         'allowNull': false,
       },
       'articleTitle': {
-        'type': DataTypes.TEXT,
+        'type': DataTypes.STRING(100),
+        'allowNull': false,
+      },
+      'articleDes': {
+        'type': DataTypes.STRING(255),
+        'allowNull': false,
+      },
+      'keywords': {
+        'type': DataTypes.STRING(100),
         'allowNull': false,
       },
       'articleContent': {
@@ -49,10 +57,6 @@ module.exports = app => {
       },
       'createTime': {
         'type': DataTypes.DATE,
-        'allowNull': false,
-      },
-      'articleDes': {
-        'type': DataTypes.TEXT,
         'allowNull': false,
       },
     }, {

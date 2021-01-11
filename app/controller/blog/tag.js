@@ -26,20 +26,27 @@ class TagController extends Controller {
     const {ctx, service,} = this,
       param = {...ctx.request.body,},
       result = await service.blog.tag.add(param);
-    this.success(result, '查询');
+    this.success(result, '新增');
   }
 
   async edit() {
     const {ctx, service,} = this,
       param = {...ctx.request.body,},
       result = await service.blog.tag.edit(param);
-    this.success(result, '查询');
+    this.success(result, '编辑');
   }
 
   async delete() {
     const {ctx, service,} = this,
       id = ctx.request.body.id,
       result = await service.blog.tag.delete(id);
+    this.success(result, '删除');
+  }
+
+  async belong() {
+    const {ctx, service,} = this,
+      id = ctx.request.body.tagId,
+      result = await service.blog.tag.belong(id);
     this.success(result, '查询');
   }
 }
