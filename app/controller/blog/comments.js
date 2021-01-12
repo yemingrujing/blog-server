@@ -8,14 +8,17 @@ class CommentsController extends Controller {
     const {ctx, service,} = this,
       limit = Number(ctx.request.body.limit) || 10,
       page = Number(ctx.request.body.page) || 1,
-      query = {};
-    if (ctx.request.body.categoryName) {
-      query.categoryName = {'$like': `%${ctx.request.body.categoryName}%`,};
-    }
-    const result = await service.blog.comments.search(query, limit, page);
+      articleTitle = ctx.request.body.articleTitle,
+      result = await service.blog.comments.search(articleTitle, limit, page);
     this.success(result, '查询');
   }
 
+  async add() {
+    const {ctx, service,} = this,
+      param = {...ctx.request.body,},
+      result = await service.blog.comments.add(param);
+    this.success(result, '新增');
+  }
 }
 
 module.exports = CommentsController;

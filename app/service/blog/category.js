@@ -28,7 +28,7 @@ class CategoryService extends Service {
 
   async add(req) {
     const {ctx,} = this,
-      {categoryName, categoryDescription,} = req,
+      {categoryName, categoryAlias, categoryDescription,} = req,
       createTime = await ctx.helper.getNowTime(),
       category = await ctx.model.Category.create({categoryName, categoryAlias, categoryDescription, createTime,});
     if (category) {

@@ -58,6 +58,11 @@ module.exports = app => {
           return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
         },
       },
+      'status': {
+        'type': DataTypes.SMALLINT,
+        'allowNull': false,
+        'defaultValue': '1',
+      },
     }, {
       'tableName': 'comments',
     });
