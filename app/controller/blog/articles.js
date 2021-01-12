@@ -19,6 +19,13 @@ class ArticlesController extends Controller {
       result = await service.blog.articles.add(param);
     this.success(result, '新增');
   }
+
+  async detail() {
+    const {ctx, service,} = this,
+      param = {...ctx.request.body,},
+      result = await service.blog.articles.detail(param.id);
+    this.success(result, '查询');
+  }
 }
 
 module.exports = ArticlesController;

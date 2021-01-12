@@ -39,7 +39,7 @@ class ArticlesService extends Service {
 
   async add(req) {
     const {ctx,} = this,
-      {articleTitle, articleDes, keywords, articleContent, cover,} = req,
+      {articleTitle, articleDes, keywords, articleContent, cover, tic,} = req,
       transaction = await ctx.model.transaction(),
       updateTime = await ctx.helper.getNowTime(),
       createTime = await ctx.helper.getNowTime(),
@@ -49,15 +49,11 @@ class ArticlesService extends Service {
       ctx.throw(500, [999, '分类不能为空',]);
     }
     let tagId = req.tagId;
-    if (!tagId && tagId.length > 0) {
+    if (!tagId || tagId.length === 0) {
       ctx.throw(500, [999, '标签不能为空',]);
     }
     tagId = await ctx.helper.uniq(tagId);
     let status = req.status;
-    if (!status) {
-      status = 0;
-    }
-    ctx;
     const articles = await ctx.model.Articles.create({
       userId,
       articleTitle,
@@ -66,6 +62,7 @@ class ArticlesService extends Service {
       articleContent,
       status,
       cover,
+      tic,
       createTime,
       updateTime,
     }, {transaction,});
@@ -81,6 +78,45 @@ class ArticlesService extends Service {
     await ctx.model.ArtitleTag.bulkCreate(tagsInfo, {transaction,});
     await transaction.commit();
     return articles.id;
+  }
+
+  async detail(id) {
+    const {ctx,} = this,
+      {QueryTypes,} = require('sequelize'),
+      articles = await ctx.model.query('SELECT\n' +
+        '\tid AS id,\n' +
+        '\tarticleContent AS articleContent,\n' +
+        '\tarticleTitle AS articleTitle,\n' +
+        '\tarticleDes AS articleDes,\n' +
+        '\tkeywords AS keywords,\n' +
+        '\tSTATUS AS STATUS,\n' +
+        '\tcover AS cover,\n' +
+        '\ttic AS tic,\n' +
+        '\t\'\' AS categoryId,\n' +
+        '\t\'\' AS tagId \n' +
+        'FROM\n' +
+        '\tarticles \n' +
+        'WHERE\n' +
+        '\tid = $id', {'bind': {'id': id,}, 'type': QueryTypes.SELECT,});
+    if (!articles || articles.length === 0) {
+      ctx.throw(500, [999, '查询不到有效的分类信息',]);
+    }
+    const article = articles[0],
+      categoryIds = await ctx.model.ArtitleCategory.findAll({
+        'attributes': ['categoryId',],
+        'where': {'artId': id,},
+      }),
+      tagIds = await ctx.model.ArtitleTag.findAll({
+        'attributes': ['tagId',],
+        'where': {'artId': id,},
+      });
+    article.categoryId = categoryIds[0].categoryId;
+    article.tagId = [];
+    tagIds.map((item) => {
+      article.tagId.push(item.tagId);
+      return item.tagId;
+    });
+    return article;
   }
 }
 

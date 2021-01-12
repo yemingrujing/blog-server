@@ -52,4 +52,5 @@ module.exports = app => {
   // 博客管理
   router.post('/api/articles/search', jwt, controller.blog.articles.search);
   router.post('/api/articles/add', jwt, controller.blog.articles.add);
+  router.post('/api/articles/detail', jwt, controller.blog.articles.detail);
 };

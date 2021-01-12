@@ -94,7 +94,6 @@ class RoleService extends Service {
       Menus = await ctx.model.Relationship.findAll({'where': {roleKey,},}),
       tMenuIds = [];
     Menus.map(key => tMenuIds.push(key.menuId));
-    ctx.logger.info('TMeunIds：' + tMenuIds);
     // 并发操作，循环用for
     menuIds.map((menuId) => {
       let index = tMenuIds.indexOf(Number(menuId));

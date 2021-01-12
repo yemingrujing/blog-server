@@ -73,6 +73,13 @@ module.exports = app => {
           return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
         },
       },
+      'tic': {
+        'type': DataTypes.SMALLINT,
+        'allowNull': false,
+        'defaultValue': () => {
+          return '0';
+        },
+      },
     }, {
       'tableName': 'articles',
     });
