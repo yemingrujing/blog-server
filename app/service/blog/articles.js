@@ -39,7 +39,7 @@ class ArticlesService extends Service {
 
   async add(req) {
     const {ctx,} = this,
-      {articleTitle, articleDes, keywords, articleContent, cover, tic,} = req,
+      {articleTitle, articleDes, keywords, articleContent, cover, tic, status,} = req,
       transaction = await ctx.model.transaction(),
       updateTime = await ctx.helper.getNowTime(),
       createTime = await ctx.helper.getNowTime(),
@@ -48,12 +48,11 @@ class ArticlesService extends Service {
     if (!categoryId) {
       ctx.throw(500, [999, '分类不能为空',]);
     }
-    let tagId = req.tagId;
+    let tagIds = req.tagId;
     if (!tagId || tagId.length === 0) {
       ctx.throw(500, [999, '标签不能为空',]);
     }
-    tagId = await ctx.helper.uniq(tagId);
-    let status = req.status;
+    tagIds = await ctx.helper.uniq(tagIds);
     const articles = await ctx.model.Articles.create({
       userId,
       articleTitle,
@@ -70,11 +69,49 @@ class ArticlesService extends Service {
       ctx.throw(500, [999, '分类新增失败：' + JSON.stringify(req),]);
     }
     const tagsInfo = [];
-    tagId.map((id) => {
-      tagsInfo.push({'tagId': id, 'artId': articles.id,});
-      return id;
+    tagIds.map((tagId) => {
+      tagsInfo.push({tagId, 'artId': articles.id,});
+      return tagId;
     });
     await ctx.model.ArtitleCategory.create({'artId': articles.id, categoryId,}, {transaction,});
+    await ctx.model.ArtitleTag.bulkCreate(tagsInfo, {transaction,});
+    await transaction.commit();
+    return articles.id;
+  }
+
+  async edit(req) {
+    const {ctx,} = this,
+      {id, articleTitle, articleDes, keywords, articleContent, cover, tic, status,} = req,
+      transaction = await ctx.model.transaction(),
+      categoryId = req.categoryId;
+    if (!categoryId) {
+      ctx.throw(500, [999, '分类不能为空',]);
+    }
+    let tagIds = req.tagId;
+    if (!tagIds || tagIds.length === 0) {
+      ctx.throw(500, [999, '标签不能为空',]);
+    }
+    tagIds = await ctx.helper.uniq(tagIds);
+    const articles = await ctx.model.Articles.findByPk(id);
+    if (!articles) {
+      ctx.throw(500, [999, '博文不存在',]);
+    }
+    await articles.update({
+      articleTitle,
+      articleDes,
+      keywords,
+      articleContent,
+      cover,
+      tic,
+      status,
+    }, {transaction,});
+    const tagsInfo = [];
+    tagIds.map((tagId) => {
+      tagsInfo.push({tagId, 'artId': articles.id,});
+      return id;
+    });
+    await ctx.model.ArtitleCategory.update({categoryId,}, {'where': {'artId': articles.id,},}, {transaction,});
+    await ctx.model.ArtitleTag.destroy({'where': {'artId': articles.id,},}, {transaction,});
     await ctx.model.ArtitleTag.bulkCreate(tagsInfo, {transaction,});
     await transaction.commit();
     return articles.id;
@@ -117,6 +154,33 @@ class ArticlesService extends Service {
       return item.tagId;
     });
     return article;
+  }
+
+  async publish(req) {
+    const {ctx,} = this,
+      {id, status,} = req;
+    if (!(status === 0 || status === 1)) {
+      ctx.throw(500, [999, '参数错误',]);
+    }
+    const articles = await ctx.model.Articles.findByPk(id);
+    if (!articles) {
+      ctx.throw(500, [999, '博文不存在',]);
+    }
+    return await articles.update({status,});
+  }
+
+  async delete(id) {
+    const {ctx,} = this,
+      transaction = await ctx.model.transaction(),
+      articles = await ctx.model.Articles.findByPk(id);
+    if (!articles) {
+      ctx.throw(500, [999, '博文不存在',]);
+    }
+    await articles.destroy({transaction,});
+    await ctx.model.ArtitleCategory.destroy({'where': {'artId': articles.id,},}, {transaction,});
+    await ctx.model.ArtitleTag.destroy({'where': {'artId': articles.id,},}, {transaction,});
+    await transaction.commit();
+    return articles;
   }
 }
 

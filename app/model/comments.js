@@ -10,29 +10,53 @@ module.exports = app => {
         'primaryKey': true,
         'autoIncrement': true,
       },
-      'userId': {
+      'author': {
         'type': DataTypes.INTEGER,
-        'allowNull': false,
+        'allowNull': true,
       },
       'articleId': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
       },
-      'commentLikeCount': {
-        'type': DataTypes.INTEGER,
-        'allowNull': false,
+      'email': {
+        'type': DataTypes.STRING(50),
+        'allowNull': true,
       },
-      'commentDate': {
-        'type': DataTypes.DATE,
+      'nickName': {
+        'type': DataTypes.STRING(20),
         'allowNull': true,
       },
       'commentContent': {
         'type': DataTypes.TEXT,
         'allowNull': false,
       },
-      'parentCommentId': {
+      'parentId': {
+        'type': DataTypes.INTEGER,
+        'allowNull': true,
+      },
+      'parentNickName': {
+        'type': DataTypes.STRING(20),
+        'allowNull': true,
+      },
+      'systemName': {
+        'type': DataTypes.STRING(20),
+        'allowNull': true,
+      },
+      'browserName': {
+        'type': DataTypes.STRING(20),
+        'allowNull': true,
+      },
+      'commentLikeCount': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
+        'defaultValue': '0',
+      },
+      'commentDate': {
+        'type': DataTypes.DATE,
+        'allowNull': false,
+        'defaultValue': () => {
+          return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+        },
       },
     }, {
       'tableName': 'comments',
