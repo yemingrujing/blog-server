@@ -68,22 +68,28 @@ class TagService extends Service {
     const {ctx,} = this,
       {QueryTypes,} = require('sequelize');
     return await ctx.model.query('SELECT\n' +
-      '\tar.id AS id,\n' +
-      '\tar.articleTitle AS articleTitle,\n' +
-      '\tc.categoryName AS categoryName,\n' +
-      '\tGROUP_CONCAT( t.tagName SEPARATOR \' \' ) AS tagName,\n' +
-      '\tar.`status` AS STATUS,\n' +
-      '\tar.updateTime AS updateTime \n' +
+      '\t* \n' +
       'FROM\n' +
-      '\tartitle_tag art\n' +
-      '\tINNER JOIN articles ar ON ar.id = art.artId\n' +
-      '\tINNER JOIN tag t ON t.id = art.tagId\n' +
-      '\tLEFT JOIN artitle_category arc ON arc.artId = ar.id\n' +
-      '\tLEFT JOIN category c ON c.id = arc.categoryId \n' +
+      '\t(\n' +
+      '\tSELECT\n' +
+      '\t\tar.id AS id,\n' +
+      '\t\tGROUP_CONCAT( t.id SEPARATOR \',\' ) AS tagId,\n' +
+      '\t\tar.articleTitle AS articleTitle,\n' +
+      '\t\tc.categoryName AS categoryName,\n' +
+      '\t\tGROUP_CONCAT( t.tagName SEPARATOR \' \' ) AS tagName,\n' +
+      '\t\tar.`status` AS STATUS,\n' +
+      '\t\tar.updateTime AS updateTime \n' +
+      '\tFROM\n' +
+      '\t\tartitle_tag art\n' +
+      '\t\tINNER JOIN articles ar ON ar.id = art.artId\n' +
+      '\t\tINNER JOIN tag t ON t.id = art.tagId\n' +
+      '\t\tLEFT JOIN artitle_category arc ON arc.artId = ar.id\n' +
+      '\t\tLEFT JOIN category c ON c.id = arc.categoryId \n' +
+      '\tGROUP BY\n' +
+      '\t\tar.id \n' +
+      '\t) temp \n' +
       'WHERE\n' +
-      '\tt.id = $id \n' +
-      'GROUP BY\n' +
-      '\tar.id;', {'bind': {'id': id,}, 'type': QueryTypes.SELECT,});
+      '\tFIND_IN_SET( $id, temp.tagId )', {'bind': {'id': id,}, 'type': QueryTypes.SELECT,});
   }
 }
 

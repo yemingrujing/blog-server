@@ -49,7 +49,7 @@ class ArticlesService extends Service {
       ctx.throw(500, [999, '分类不能为空',]);
     }
     let tagIds = req.tagId;
-    if (!tagId || tagId.length === 0) {
+    if (!tagIds || tagIds.length === 0) {
       ctx.throw(500, [999, '标签不能为空',]);
     }
     tagIds = await ctx.helper.uniq(tagIds);

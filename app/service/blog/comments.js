@@ -8,6 +8,7 @@ class CommentsService extends Service {
     const {ctx,} = this,
       {QueryTypes,} = require('sequelize'),
       list = await ctx.model.query('SELECT\n' +
+        '\tc.id AS id,\n' +
         '\tc.articleId AS articleId,\n' +
         '\ta.articleTitle AS articleTitle,\n' +
         '\tc.commentContent AS commentContent,\n' +
@@ -47,9 +48,9 @@ class CommentsService extends Service {
     }
     let parentNickName;
     if (parentId && parentId > 0) {
-      const pComments = await ctx.model.Comments.findByPk({'id': parentId,});
+      const pComments = await ctx.model.Comments.findByPk(parentId);
       if (pComments) {
-        parentNickName = pComments.parentNickName;
+        parentNickName = pComments.nickName;
       }
     }
     const comments = await ctx.model.Comments.create({
