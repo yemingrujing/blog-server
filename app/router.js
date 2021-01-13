@@ -60,4 +60,5 @@ module.exports = app => {
   // 评论管理
   router.post('/api/comments/search', jwt, controller.blog.comments.search);
   router.post('/api/comments/add', jwt, controller.blog.comments.add);
+  router.post('/api/comments/del', jwt, controller.blog.comments.delete);
 };

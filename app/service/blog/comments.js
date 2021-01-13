@@ -70,6 +70,19 @@ class CommentsService extends Service {
     }
     return comments.id;
   }
+
+  async delete(id) {
+    const {ctx,} = this,
+      transaction = await ctx.model.transaction(),
+      comments = await ctx.model.Comments.findByPk(id);
+    if (!comments) {
+      ctx.throw(500, [999, '评论不存在',]);
+    }
+    await comments.destroy({transaction,});
+    await ctx.model.Comments.destroy({'where': {'parentId': id,},}, {transaction,});
+    await transaction.commit();
+    return comments;
+  }
 }
 
 module.exports = CommentsService;

@@ -19,6 +19,13 @@ class CommentsController extends Controller {
       result = await service.blog.comments.add(param);
     this.success(result, '新增');
   }
+
+  async delete() {
+    const {ctx, service,} = this,
+      id = ctx.request.body.id,
+      result = await service.blog.comments.delete(id);
+    this.success(result, '删除');
+  }
 }
 
 module.exports = CommentsController;

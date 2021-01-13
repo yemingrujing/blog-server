@@ -177,8 +177,8 @@ class ArticlesService extends Service {
       ctx.throw(500, [999, '博文不存在',]);
     }
     await articles.destroy({transaction,});
-    await ctx.model.ArtitleCategory.destroy({'where': {'artId': articles.id,},}, {transaction,});
-    await ctx.model.ArtitleTag.destroy({'where': {'artId': articles.id,},}, {transaction,});
+    await ctx.model.ArtitleCategory.destroy({'where': {'artId': id,},}, {transaction,});
+    await ctx.model.ArtitleTag.destroy({'where': {'artId': id,},}, {transaction,});
     await transaction.commit();
     return articles;
   }
