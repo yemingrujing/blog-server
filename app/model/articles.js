@@ -1,6 +1,4 @@
-'use strict';
-
-const moment = require('moment');
+/* indent size: 2 */
 
 module.exports = app => {
   const DataTypes = app.Sequelize,
@@ -10,7 +8,6 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
-        'autoIncrement': true,
       },
       'userId': {
         'type': DataTypes.INTEGER,
@@ -22,11 +19,11 @@ module.exports = app => {
       },
       'articleDes': {
         'type': DataTypes.STRING(255),
-        'allowNull': false,
+        'allowNull': true,
       },
       'keywords': {
         'type': DataTypes.STRING(100),
-        'allowNull': false,
+        'allowNull': true,
       },
       'articleContent': {
         'type': DataTypes.TEXT,
@@ -35,16 +32,12 @@ module.exports = app => {
       'articleViews': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
-        'defaultValue': () => {
-          return '0';
-        },
+        'defaultValue': '0',
       },
       'articleCommentCount': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
-        'defaultValue': () => {
-          return '0';
-        },
+        'defaultValue': '0',
       },
       'articleDate': {
         'type': DataTypes.DATE,
@@ -53,9 +46,7 @@ module.exports = app => {
       'updateTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
-        'defaultValue': () => {
-          return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-        },
+        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
       },
       'status': {
         'type': DataTypes.INTEGER,
@@ -69,22 +60,18 @@ module.exports = app => {
       'createTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
-        'defaultValue': () => {
-          return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-        },
+        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
       },
       'tic': {
-        'type': DataTypes.SMALLINT,
+        'type': DataTypes.INTEGER,
         'allowNull': false,
-        'defaultValue': () => {
-          return '0';
-        },
+        'defaultValue': '0',
       },
     }, {
       'tableName': 'articles',
     });
 
-  Model.associate = function() {
+  Model.associate = function () {
 
   };
 

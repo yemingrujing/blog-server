@@ -1,6 +1,4 @@
-'use strict';
-
-const moment = require('moment');
+/* indent size: 2 */
 
 module.exports = app => {
   const DataTypes = app.Sequelize,
@@ -10,7 +8,6 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
-        'autoIncrement': true,
       },
       'artId': {
         'type': DataTypes.INTEGER,
@@ -23,15 +20,13 @@ module.exports = app => {
       'createTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
-        'defaultValue': () => {
-          return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-        },
+        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
       },
     }, {
       'tableName': 'artitle_category',
     });
 
-  Model.associate = function() {
+  Model.associate = function () {
 
   };
 

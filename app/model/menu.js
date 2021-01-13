@@ -1,4 +1,4 @@
-'use strict';
+/* indent size: 2 */
 
 module.exports = app => {
   const DataTypes = app.Sequelize,
@@ -8,7 +8,6 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
-        'autoIncrement': true,
       },
       'menuType': {
         'type': DataTypes.INTEGER,
@@ -46,7 +45,7 @@ module.exports = app => {
       },
       'remark': {
         'type': DataTypes.STRING(255),
-        'allowNull': false,
+        'allowNull': true,
       },
     }, {
       'tableName': 'menu',

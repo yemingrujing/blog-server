@@ -3,23 +3,24 @@
 module.exports = app => {
   const DataTypes = app.Sequelize,
 
-    Model = app.model.define('category', {
+    Model = app.model.define('poem', {
       'id': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
       },
-      'categoryName': {
-        'type': DataTypes.STRING(50),
+      'content': {
+        'type': DataTypes.STRING(1024),
         'allowNull': false,
       },
-      'categoryAlias': {
-        'type': DataTypes.STRING(15),
+      'typeName': {
+        'type': DataTypes.STRING(100),
         'allowNull': false,
       },
-      'categoryDescription': {
-        'type': DataTypes.TEXT,
+      'author': {
+        'type': DataTypes.STRING(5),
         'allowNull': false,
+        'defaultValue': 'a',
       },
       'createTime': {
         'type': DataTypes.DATE,
@@ -27,7 +28,7 @@ module.exports = app => {
         'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
       },
     }, {
-      'tableName': 'category',
+      'tableName': 'poem',
     });
 
   Model.associate = function () {

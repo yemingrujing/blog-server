@@ -1,6 +1,4 @@
-'use strict';
-
-const moment = require('moment');
+/* indent size: 2 */
 
 module.exports = app => {
   const DataTypes = app.Sequelize,
@@ -10,7 +8,6 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
-        'autoIncrement': true,
       },
       'author': {
         'type': DataTypes.INTEGER,
@@ -56,20 +53,17 @@ module.exports = app => {
       'commentDate': {
         'type': DataTypes.DATE,
         'allowNull': false,
-        'defaultValue': () => {
-          return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-        },
+        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
       },
       'status': {
-        'type': DataTypes.SMALLINT,
+        'type': DataTypes.INTEGER,
         'allowNull': false,
-        'defaultValue': '1',
       },
     }, {
       'tableName': 'comments',
     });
 
-  Model.associate = function() {
+  Model.associate = function () {
 
   };
 

@@ -1,4 +1,4 @@
-'use strict';
+/* indent size: 2 */
 
 module.exports = app => {
   const DataTypes = app.Sequelize,
@@ -24,7 +24,7 @@ module.exports = app => {
       'tableName': 'Friends',
     });
 
-  Model.associate = function() {
+  Model.associate = function () {
 
   };
 

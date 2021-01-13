@@ -1,4 +1,4 @@
-'use strict';
+/* indent size: 2 */
 
 module.exports = app => {
   const DataTypes = app.Sequelize,
@@ -8,7 +8,6 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
-        'autoIncrement': true,
       },
       'userId': {
         'type': DataTypes.INTEGER,
@@ -30,7 +29,7 @@ module.exports = app => {
       'tableName': 'user_friends',
     });
 
-  Model.associate = function() {
+  Model.associate = function () {
 
   };
 

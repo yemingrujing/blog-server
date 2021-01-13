@@ -1,4 +1,4 @@
-'use strict';
+/* indent size: 2 */
 
 module.exports = app => {
   const DataTypes = app.Sequelize,
@@ -8,7 +8,6 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
-        'autoIncrement': true,
       },
       'tagName': {
         'type': DataTypes.STRING(20),
@@ -25,12 +24,13 @@ module.exports = app => {
       'createTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
+        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
       },
     }, {
       'tableName': 'tag',
     });
 
-  Model.associate = function() {
+  Model.associate = function () {
 
   };
 
