@@ -8,6 +8,7 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
+        'autoIncrement': true,
       },
       'userId': {
         'type': DataTypes.INTEGER,
@@ -46,7 +47,7 @@ module.exports = app => {
       'updateTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
-        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
+        'defaultValue': app.Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       'status': {
         'type': DataTypes.INTEGER,
@@ -60,7 +61,7 @@ module.exports = app => {
       'createTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
-        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
+        'defaultValue': app.Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       'tic': {
         'type': DataTypes.INTEGER,

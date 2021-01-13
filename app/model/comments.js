@@ -8,6 +8,7 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
+        'autoIncrement': true,
       },
       'author': {
         'type': DataTypes.INTEGER,
@@ -53,7 +54,7 @@ module.exports = app => {
       'commentDate': {
         'type': DataTypes.DATE,
         'allowNull': false,
-        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
+        'defaultValue': app.Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       'status': {
         'type': DataTypes.INTEGER,

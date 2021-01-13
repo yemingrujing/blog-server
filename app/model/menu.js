@@ -8,6 +8,7 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
+        'autoIncrement': true,
       },
       'menuType': {
         'type': DataTypes.INTEGER,

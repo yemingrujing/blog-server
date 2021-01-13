@@ -8,6 +8,7 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
+        'autoIncrement': true,
       },
       'content': {
         'type': DataTypes.STRING(1024),
@@ -25,7 +26,7 @@ module.exports = app => {
       'createTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
-        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
+        'defaultValue': app.Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     }, {
       'tableName': 'poem',

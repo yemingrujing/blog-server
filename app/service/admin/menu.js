@@ -16,6 +16,7 @@ class MenuService extends Service {
         '\tm.`menuType`,\n' +
         '\tm.`icon`,\n' +
         '\tm.`sort`,\n' +
+        '\tm.`remark`,\n' +
         '\t( SELECT menuName FROM menu WHERE id = m.`pMenuId` ) AS parentName \n' +
         'FROM\n' +
         '\tmenu AS m \n' +

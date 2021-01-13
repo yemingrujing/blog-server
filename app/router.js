@@ -61,4 +61,10 @@ module.exports = app => {
   router.post('/api/comments/search', jwt, controller.blog.comments.search);
   router.post('/api/comments/add', jwt, controller.blog.comments.add);
   router.post('/api/comments/del', jwt, controller.blog.comments.delete);
+
+  // 一言
+  router.post('/api/poem/search', jwt, controller.blog.poem.search);
+  router.post('/api/poem/add', jwt, controller.blog.poem.add);
+  router.post('/api/poem/edit', jwt, controller.blog.poem.edit);
+  router.post('/api/poem/del', jwt, controller.blog.poem.delete);
 };

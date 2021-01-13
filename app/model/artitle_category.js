@@ -8,6 +8,7 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
+        'autoIncrement': true,
       },
       'artId': {
         'type': DataTypes.INTEGER,
@@ -20,7 +21,7 @@ module.exports = app => {
       'createTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
-        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
+        'defaultValue': app.Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     }, {
       'tableName': 'artitle_category',

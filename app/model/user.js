@@ -8,6 +8,7 @@ module.exports = app => {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
+        'autoIncrement': true,
       },
       'userIp': {
         'type': DataTypes.STRING(20),
@@ -36,7 +37,7 @@ module.exports = app => {
       'userRegistTime': {
         'type': DataTypes.DATE,
         'allowNull': true,
-        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
+        'defaultValue': app.Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       'userBirthday': {
         'type': DataTypes.DATE,
@@ -66,7 +67,7 @@ module.exports = app => {
       'updateTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
-        'defaultValue': sequelize.literal('CURRENT_TIMESTAMP'),
+        'defaultValue': app.Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       'remark': {
         'type': DataTypes.STRING(255),
