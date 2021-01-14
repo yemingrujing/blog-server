@@ -5,7 +5,7 @@ const Controller = require('egg').Controller;
 class HomeController extends Controller {
   async index() {
     const {ctx,} = this;
-    ctx.body = this.service.tool.time();
+    ctx.body = await ctx.helper.getNowTime();
   }
 }
 

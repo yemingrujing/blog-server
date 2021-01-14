@@ -9,7 +9,7 @@ class GalleryService extends Service {
       list = await ctx.model.Gallery.findAndCountAll({
         'offset': (page * limit) - limit,
         'limit': limit,
-        'attributes': ['id', 'title', 'describe', 'url', 'status', 'remark', 'createTime',],
+        'attributes': ['id', 'originTime', 'title', 'describe', 'url', 'status', 'remark', 'createTime', 'updateTime',],
         'where': query,
         'order': [['createTime', 'desc',],],
       });
@@ -21,9 +21,9 @@ class GalleryService extends Service {
 
   async add(req) {
     const {ctx,} = this,
-      {title, describe, url, status, remark,} = req,
+      {title, describe, originTime, url, status, remark,} = req,
       createTime = await ctx.helper.getNowTime(),
-      gallery = await ctx.model.Gallery.create({title, describe, url, status, remark, createTime,});
+      gallery = await ctx.model.Gallery.create({title, describe, originTime, url, status, remark, createTime,});
     if (gallery) {
       return gallery.id;
     }
@@ -32,7 +32,7 @@ class GalleryService extends Service {
 
   async edit(req) {
     const {ctx,} = this,
-      {id, title, describe, url, status, remark,} = req,
+      {id, title, describe, originTime, url, status, remark,} = req,
       gallery = await ctx.model.Gallery.findByPk(id);
     if (!gallery) {
       ctx.throw(500, [1003, '相册不存在',]);
@@ -40,6 +40,7 @@ class GalleryService extends Service {
     return await gallery.update({
       title,
       describe,
+      originTime,
       url,
       status,
       remark,

@@ -3,29 +3,24 @@
 module.exports = app => {
   const DataTypes = app.Sequelize,
 
-    Model = app.model.define('gallery', {
+    Model = app.model.define('system_config', {
       'id': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
         'primaryKey': true,
         'autoIncrement': true,
       },
-      'title': {
+      'configTitle': {
         'type': DataTypes.STRING(50),
         'allowNull': false,
       },
-      'describe': {
+      'signKey': {
         'type': DataTypes.STRING(100),
         'allowNull': true,
       },
-      'url': {
-        'type': DataTypes.STRING(1024),
+      'configContent': {
+        'type': DataTypes.STRING(300),
         'allowNull': false,
-      },
-      'status': {
-        'type': DataTypes.INTEGER,
-        'allowNull': false,
-        'defaultValue': '1',
       },
       'remark': {
         'type': DataTypes.STRING(100),
@@ -36,17 +31,8 @@ module.exports = app => {
         'allowNull': false,
         'defaultValue': app.Sequelize.literal('CURRENT_TIMESTAMP'),
       },
-      'updateTime': {
-        'type': DataTypes.DATE,
-        'allowNull': false,
-        'defaultValue': app.Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
-      'originTime': {
-        'type': DataTypes.DATE,
-        'allowNull': false,
-      },
     }, {
-      'tableName': 'gallery',
+      'tableName': 'system_config',
     });
 
   Model.associate = function () {
