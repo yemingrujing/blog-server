@@ -123,6 +123,27 @@ module.exports = appInfo => {
       'encoding': 'utf-8',
       'consoleLevel': 'DEBUG',
     },
+    'upLoad': {
+      'multipart': true,
+      'formidable': {
+        'maxFileSize': 200 * 1024 * 1024, // 设置上传文件大小最大限制，默认2M
+      },
+    },
+    'multipart': {
+      'mode': 'file',
+    },
+    'imageType': ['png', 'jpg', 'jpeg', 'gif',],
+    'github': {
+      'reqBaseUrl': 'http://api.github.com/repos/yemingrujing/Drawing_Images/contents',
+      'imgBaseUrl': 'https://raw.githubusercontent.com/yemingrujing/Drawing_Images/master/',
+      'token': '',
+    },
+    'aliyun': {
+      'region': '',
+      'accessKeyId': '',
+      'accessKeySecret': '',
+      'bucket': '',
+    },
   };
 
   return {
