@@ -23,13 +23,6 @@ class ImagesController extends Controller {
     this.success(result, '新增');
   }
 
-  async edit() {
-    const {ctx, service,} = this,
-      param = {...ctx.request.body,},
-      result = await service.settings.images.edit(param);
-    this.success(result, '编辑');
-  }
-
   async switch() {
     const {ctx, service,} = this,
       param = {...ctx.request.body,},

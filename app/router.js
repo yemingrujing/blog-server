@@ -78,7 +78,6 @@ module.exports = app => {
   // 图片
   router.post('/api/images/search', jwt, controller.settings.images.search);
   router.post('/api/images/add', jwt, controller.settings.images.add);
-  router.post('/api/images/edit', jwt, controller.settings.images.edit);
   router.post('/api/images/switch', jwt, controller.settings.images.switch);
   router.post('/api/images/del', jwt, controller.settings.images.delete);
 };

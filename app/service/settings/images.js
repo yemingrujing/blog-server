@@ -30,21 +30,6 @@ class ImagesService extends Service {
     ctx.throw(500, [999, '图片新增失败：' + JSON.stringify(req),]);
   }
 
-  async edit(req) {
-    const {ctx,} = this,
-      {id, imageTitle, imageUrl, status, remark,} = req,
-      images = await ctx.model.Images.findByPk(id);
-    if (!images) {
-      ctx.throw(500, [1003, '图片不存在',]);
-    }
-    return await images.update({
-      imageTitle,
-      imageUrl,
-      status,
-      remark,
-    });
-  }
-
   async switch(req) {
     const {ctx,} = this,
       {id, status,} = req;
