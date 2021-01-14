@@ -45,12 +45,31 @@ class ImagesService extends Service {
 
 
   async delete(id) {
-    const {ctx,} = this,
+    const {ctx, service,} = this,
       images = await ctx.model.Images.findByPk(id);
     if (!images) {
       ctx.throw(500, [1003, '图片不存在',]);
     }
-    return await images.destroy();
+    const result = await images.destroy();
+    if (result) {
+      // 获取图床
+      const imageStorage = await service.settings.systemConfig.imageStorage(),
+        // 查询图床代理字段
+        imageBaseUrl = await ctx.model.SystemConfig.findAll(
+          {
+            'attributes': ['configContent',],
+            'where': {'signKey': 'imageBaseUrl',},
+          }
+        ),
+        // 获取图片路径
+        url = ctx.request.body.imageUrl.replace(imageBaseUrl[0].configContent, ''),
+        // 删除图床文件
+        res = await service[imageStorage].delete(url);
+      return res;
+    }
+    ctx.throw(500, [999, '删除失败',]);
+
+
   }
 }
 

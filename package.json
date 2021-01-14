@@ -7,6 +7,8 @@
     "declarations": true
   },
   "dependencies": {
+    "ali-oss": "^6.13.1",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
     "egg": "^2.15.1",
     "egg-cors": "^2.2.3",

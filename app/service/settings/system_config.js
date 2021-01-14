@@ -36,7 +36,7 @@ class SystemConfigService extends Service {
   async imageStorage() {
     // 查询图床
     const {ctx,} = this,
-      systemConfig = await ctx.model.SystemConfig.findAll({'where': {'signKey': imageStorage,},});
+      systemConfig = await ctx.model.SystemConfig.findAll({'where': {'signKey': 'imageStorage',},});
     if (!systemConfig) {
       ctx.throw(500, [999, '请先去添加imageStorage配置信息',]);
     }

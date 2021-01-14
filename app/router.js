@@ -80,4 +80,12 @@ module.exports = app => {
   router.post('/api/images/add', jwt, controller.settings.images.add);
   router.post('/api/images/switch', jwt, controller.settings.images.switch);
   router.post('/api/images/del', jwt, controller.settings.images.delete);
+
+  // 系统设置
+  router.post('/api/system_config/search', jwt, controller.settings.systemConfig.search);
+  router.post('/api/system_config/add', jwt, controller.settings.systemConfig.add);
+  router.post('/api/system_config/edit', jwt, controller.settings.systemConfig.edit);
+
+  // 图片上传
+  router.post('/api/uploads/images', jwt, controller.upload.images);
 };
