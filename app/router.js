@@ -67,4 +67,18 @@ module.exports = app => {
   router.post('/api/poem/add', jwt, controller.blog.poem.add);
   router.post('/api/poem/edit', jwt, controller.blog.poem.edit);
   router.post('/api/poem/del', jwt, controller.blog.poem.delete);
+
+  // 相册
+  router.post('/api/gallery/search', jwt, controller.blog.gallery.search);
+  router.post('/api/gallery/add', jwt, controller.blog.gallery.add);
+  router.post('/api/gallery/edit', jwt, controller.blog.gallery.edit);
+  router.post('/api/gallery/switch', jwt, controller.blog.gallery.switch);
+  router.post('/api/gallery/del', jwt, controller.blog.gallery.delete);
+
+  // 图片
+  router.post('/api/images/search', jwt, controller.settings.images.search);
+  router.post('/api/images/add', jwt, controller.settings.images.add);
+  router.post('/api/images/edit', jwt, controller.settings.images.edit);
+  router.post('/api/images/switch', jwt, controller.settings.images.switch);
+  router.post('/api/images/del', jwt, controller.settings.images.delete);
 };
