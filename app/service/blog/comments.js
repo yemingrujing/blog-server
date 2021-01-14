@@ -71,6 +71,19 @@ class CommentsService extends Service {
     return comments.id;
   }
 
+  async publish(req) {
+    const {ctx,} = this,
+      {id, status,} = req;
+    if (!(status === 0 || status === 1)) {
+      ctx.throw(500, [999, '参数错误',]);
+    }
+    const comments = await ctx.model.Comments.findByPk(id);
+    if (!comments) {
+      ctx.throw(500, [999, '评论不存在',]);
+    }
+    return await comments.update({status,});
+  }
+
   async delete(id) {
     const {ctx,} = this,
       transaction = await ctx.model.transaction(),

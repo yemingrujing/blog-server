@@ -20,6 +20,13 @@ class CommentsController extends Controller {
     this.success(result, '新增');
   }
 
+  async publish() {
+    const {ctx, service,} = this,
+      param = {...ctx.request.body,},
+      result = await service.blog.comments.publish(param);
+    this.success(result, '开关');
+  }
+
   async delete() {
     const {ctx, service,} = this,
       id = ctx.request.body.id,
