@@ -62,10 +62,10 @@ class ImagesService extends Service {
           }
         ),
         // 获取图片路径
-        url = ctx.request.body.imageUrl.replace(imageBaseUrl[0].configContent, ''),
+        url = ctx.request.body.imageUrl.replace(imageBaseUrl[0].configContent, '');
         // 删除图床文件
-        res = await service[imageStorage].delete(url);
-      return res;
+      service[imageStorage].delete(url);
+      return result;
     }
     ctx.throw(500, [999, '删除失败',]);
 

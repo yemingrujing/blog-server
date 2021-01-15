@@ -22,7 +22,7 @@ class UploadController extends Controller {
             createTime,
           });
       }
-      this.success({'result': imageUrl, 'type': '上传',});
+      this.success(imageUrl, '上传');
     } else {
       this.error('上传失败');
     }

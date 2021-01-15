@@ -13,12 +13,10 @@ class GithubService extends Service {
     // 获取文件
     let content = fs.readFileSync(file.filepath);
     // 文件转base64
-    content = Buffer.from(content)
-      .toString('base64');
+    content = Buffer.from(content).toString('base64');
     const res = await axios({
       'headers': {
-        'Content-Type': 'application/json',
-        'X-GitHub-Media-Type': 'github.v3',
+        'Accept': 'application/vnd.github.v3+json',
         'Authorization': 'token ' + config.github.token,
       },
       'method': 'put',
@@ -43,8 +41,7 @@ class GithubService extends Service {
     const res = await axios(
       {
         'headers': {
-          'Content-Type': 'application/json',
-          'X-GitHub-Media-Type': 'github.v3',
+          'Accept': 'application/vnd.github.v3+json',
           'Authorization': 'token ' + config.github.token,
         },
         'method': 'delete',
