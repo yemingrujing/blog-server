@@ -62,12 +62,29 @@ class GalleryService extends Service {
 
 
   async delete(id) {
-    const {ctx,} = this,
+    const {ctx, service,} = this,
       gallery = await ctx.model.Gallery.findByPk(id);
     if (!gallery) {
       ctx.throw(500, [1003, '相册不存在',]);
     }
-    return await gallery.destroy();
+    const result = await gallery.destroy();
+    if (result) {
+      // 获取图床
+      const imageStorage = await service.settings.systemConfig.imageStorage(),
+        // 查询图床代理字段
+        imageBaseUrl = await ctx.model.SystemConfig.findAll(
+          {
+            'attributes': ['configContent',],
+            'where': {'signKey': 'imageBaseUrl',},
+          }
+        ),
+        // 获取图片路径
+        url = gallery.url.replace(imageBaseUrl[0].configContent, '');
+      // 删除图床文件
+      service[imageStorage].delete(url);
+      return result;
+    }
+    ctx.throw(500, [999, '删除失败',]);
   }
 }
 
