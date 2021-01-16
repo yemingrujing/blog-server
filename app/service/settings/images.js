@@ -68,8 +68,14 @@ class ImagesService extends Service {
       return result;
     }
     ctx.throw(500, [999, '删除失败',]);
+  }
 
-
+  async findImagesList() {
+    const {ctx,} = this;
+    return await ctx.model.Images.findAll({
+      'attributes': ['id', 'imageTitle', 'imageUrl',],
+      'order': [['createTime', 'desc',],],
+    });
   }
 }
 

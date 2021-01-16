@@ -31,6 +31,9 @@ class UserController extends Controller {
       'account': userInfo.userName,
       'avatar': userInfo.avatar,
       'theme': userInfo.theme,
+      'nickName': userInfo.nickName,
+      'userEmail': userInfo.userEmail,
+      'remark': userInfo.remark,
     }, '登录');
   }
 
@@ -50,6 +53,20 @@ class UserController extends Controller {
   async logout() {
     this.ctx.session = null;
     this.success('注销成功', '注销');
+  }
+
+  async setAvator() {
+    const {ctx, service,} = this,
+      param = {...ctx.request.body,},
+      result = await service.middle.user.setAvator(param);
+    this.success(result, '修改头像');
+  }
+
+  async changePassword() {
+    const {ctx, service,} = this,
+      param = {...ctx.request.body,},
+      result = await service.middle.user.changePassword(param);
+    this.success(result, '修改密码');
   }
 }
 

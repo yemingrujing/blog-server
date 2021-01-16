@@ -58,6 +58,29 @@ class UserService extends Service {
       });
     return await service.api.user.permission(menuInfo, permission);
   }
+
+  async setAvator(req) {
+    const {ctx,} = this,
+      {id, avatar,} = req,
+      user = await ctx.model.User.findByPk(id);
+    if (!user) {
+      ctx.throw(500, [999, '用户不存在',]);
+    }
+    return user.update({avatar,});
+  }
+
+  async changePassword(req) {
+    const {ctx,} = this,
+      {id, password, newPassword,} = req,
+      user = await ctx.model.User.findByPk(id);
+    if (!user) {
+      ctx.throw(500, [999, '用户不存在',]);
+    }
+    if (password && user.userPassword === password) {
+      return user.update({'userPassword': newPassword,});
+    }
+    ctx.throw(500, [999, '修改密码失败，原密码不正确',]);
+  }
 }
 
 module.exports = UserService;

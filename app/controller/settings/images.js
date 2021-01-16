@@ -36,6 +36,12 @@ class ImagesController extends Controller {
       result = await service.settings.images.delete(id);
     this.success(result, '删除');
   }
+
+  async findImagesList() {
+    const {service,} = this,
+      result = await service.settings.images.findImagesList();
+    this.success(result, '查询');
+  }
 }
 
 module.exports = ImagesController;

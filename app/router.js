@@ -12,6 +12,8 @@ module.exports = app => {
   router.post('/api/user/login', controller.middle.user.login);
   router.post('/api/user/userInfo', jwt, controller.middle.user.userInfo);
   router.post('/api/user/logout', jwt, controller.middle.user.logout);
+  router.post('/api/user/setAvator', jwt, controller.middle.user.setAvator);
+  router.post('/api/user/changePassword', jwt, controller.middle.user.changePassword);
 
   // 用户管理
   router.post('/api/users/search', jwt, controller.admin.user.search);
@@ -81,6 +83,7 @@ module.exports = app => {
   router.post('/api/images/add', jwt, controller.settings.images.add);
   router.post('/api/images/switch', jwt, controller.settings.images.switch);
   router.post('/api/images/del', jwt, controller.settings.images.delete);
+  router.post('/api/images/findImagesList', jwt, controller.settings.images.findImagesList);
 
   // 系统设置
   router.post('/api/system_config/search', jwt, controller.settings.systemConfig.search);
