@@ -51,7 +51,7 @@ module.exports = app => {
         'allowNull': false,
         'defaultValue': '0',
       },
-      'commentDate': {
+      'createTime': {
         'type': DataTypes.DATE,
         'allowNull': false,
         'defaultValue': app.Sequelize.literal('CURRENT_TIMESTAMP'),

@@ -90,6 +90,12 @@ module.exports = app => {
   router.post('/api/system_config/add', jwt, controller.settings.systemConfig.add);
   router.post('/api/system_config/edit', jwt, controller.settings.systemConfig.edit);
 
+  // 报表
+  router.post('/api/report/search', jwt, controller.report.search);
+  router.post('/api/report/item', jwt, controller.report.item);
+  router.post('/api/report/category', jwt, controller.report.category);
+  router.post('/api/report/city', jwt, controller.report.city);
+
   // 图片上传
   router.post('/api/uploads/images', jwt, controller.upload.images);
 };

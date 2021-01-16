@@ -18,7 +18,7 @@ class CommentsService extends Service {
         '\tc.parentId AS parentId,\n' +
         '\tc.parentNickName AS parentNickName,\n' +
         '\tc.STATUS AS status,\n' +
-        '\tc.commentDate AS commentDate,\n' +
+        '\tc.createTime AS commentDate,\n' +
         '\tc.browserName AS browserName,\n' +
         '\tc.systemName AS systemName \n' +
         'FROM\n' +
@@ -41,7 +41,7 @@ class CommentsService extends Service {
 
   async add(req) {
     const {ctx,} = this,
-      commentDate = await ctx.helper.getNowTime(),
+      createTime = await ctx.helper.getNowTime(),
       {author, articleId, email, nickName, commentContent, parentId, systemName, browserName,} = req;
     if (!commentContent) {
       ctx.throw(500, [999, '评论内容不能为空',]);
@@ -63,7 +63,7 @@ class CommentsService extends Service {
       parentNickName,
       systemName,
       browserName,
-      commentDate,
+      createTime,
     });
     if (!comments) {
       ctx.throw(500, [999, '评论保存失败',]);
