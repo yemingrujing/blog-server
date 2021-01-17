@@ -30,12 +30,17 @@ class ReportService extends Service {
       year = new Date().getFullYear();
     const arr = [];
     for (let i = 0; i < 6; i++) {
-      const data = ctx.model.query('select count(id) AS count from ' + key + ' where date(createTime) between $year-$month-01 and $year-$month-31', {
-        'bind': {
-          'year': year,
-          'month': month,
-        }, 'type': QueryTypes.SELECT,
+      ctx.logger.info('year', year);
+      ctx.logger.info('month', month);
+      const data = await ctx.model.query('select count(id) AS count from ' + key + ' where date(createTime) ' +
+        'between \'' + year +
+        '-' + month +
+        '-01\' and \'' + year +
+        '-' + month +
+        '-31\'', {
+        'type': QueryTypes.SELECT,
       });
+      ctx.logger.info('data：' + JSON.stringify(data));
       arr.push(data[0].count);
       --month;
       if (month < 1) {
@@ -51,12 +56,12 @@ class ReportService extends Service {
       list = await ctx.model.Statistics.findAll({
         'attribute': ['browserName', 'cityName',],
       });
-    return await this.itemd(list);
+    return this.itemd(list);
   }
 
   async city() {
     const {ctx,} = this;
-    return ctx.model.City.findAll({
+    return await ctx.model.City.findAll({
       'attributes': ['cityName', 'x', 'y', 'n',],
     });
   }

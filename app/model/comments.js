@@ -59,6 +59,7 @@ module.exports = app => {
       'status': {
         'type': DataTypes.INTEGER,
         'allowNull': false,
+        'defaultValue': '1',
       },
     }, {
       'tableName': 'comments',

@@ -50,6 +50,14 @@ class ImagesService extends Service {
     if (!images) {
       ctx.throw(500, [1003, '图片不存在',]);
     }
+    const articlesCount = await ctx.model.Articles.count({'where': {'cover': images.imageUrl,},});
+    if (articlesCount > 0) {
+      ctx.throw(500, [1003, '请先去博文中替换图片再删除',]);
+    }
+    const userCount = await ctx.model.User.count({'where': {'avatar': images.imageUrl,},});
+    if (userCount > 0) {
+      ctx.throw(500, [1003, '请先去替换用户头像再删除',]);
+    }
     const result = await images.destroy();
     if (result) {
       // 获取图床
