@@ -14,6 +14,10 @@ module.exports = app => {
         'type': DataTypes.STRING(50),
         'allowNull': false,
       },
+      'imageDir': {
+        'type': DataTypes.STRING(50),
+        'allowNull': true,
+      },
       'imageUrl': {
         'type': DataTypes.STRING(1024),
         'allowNull': true,

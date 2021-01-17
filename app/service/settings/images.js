@@ -21,9 +21,9 @@ class ImagesService extends Service {
 
   async add(req) {
     const {ctx,} = this,
-      {imageTitle, imageUrl, status, remark,} = req,
+      {imageDir, imageTitle, imageUrl, status, remark,} = req,
       createTime = await ctx.helper.getNowTime(),
-      images = await ctx.model.Images.create({imageTitle, imageUrl, status, remark, createTime,});
+      images = await ctx.model.Images.create({imageDir, imageTitle, imageUrl, status, remark, createTime,});
     if (images) {
       return images.id;
     }
@@ -78,9 +78,10 @@ class ImagesService extends Service {
     ctx.throw(500, [999, '删除失败',]);
   }
 
-  async findImagesList() {
+  async findImagesList(query) {
     const {ctx,} = this;
     return await ctx.model.Images.findAll({
+      'where': query,
       'attributes': ['id', 'imageTitle', 'imageUrl',],
       'order': [['createTime', 'desc',],],
     });

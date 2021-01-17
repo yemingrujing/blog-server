@@ -38,8 +38,12 @@ class ImagesController extends Controller {
   }
 
   async findImagesList() {
-    const {service,} = this,
-      result = await service.settings.images.findImagesList();
+    const {ctx, service,} = this,
+      query = {};
+    if (ctx.request.body.imageDir) {
+      query.imageDir = ctx.request.body.imageDir;
+    }
+    const result = await service.settings.images.findImagesList(query);
     this.success(result, '查询');
   }
 }

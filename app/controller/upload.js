@@ -17,6 +17,7 @@ class UploadController extends Controller {
       if (!storage) {
         await service.settings.images.add(
           {
+            'imageDir': path || '/blog/common/',
             imageTitle,
             imageUrl,
             createTime,
