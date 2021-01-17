@@ -58,22 +58,21 @@ class ImagesService extends Service {
     if (userCount > 0) {
       ctx.throw(500, [1003, '请先去替换用户头像再删除',]);
     }
-    const result = await images.destroy();
-    if (result) {
-      // 获取图床
-      const imageStorage = await service.settings.systemConfig.imageStorage(),
-        // 查询图床代理字段
-        imageBaseUrl = await ctx.model.SystemConfig.findAll(
-          {
-            'attributes': ['configContent',],
-            'where': {'signKey': 'imageBaseUrl',},
-          }
-        ),
-        // 获取图片路径
-        url = images.imageUrl.replace(imageBaseUrl[0].configContent, '');
+    // 获取图床
+    const imageStorage = await service.settings.systemConfig.imageStorage(),
+      // 查询图床代理字段
+      imageBaseUrl = await ctx.model.SystemConfig.findAll(
+        {
+          'attributes': ['configContent',],
+          'where': {'signKey': 'imageBaseUrl',},
+        }
+      ),
+      // 获取图片路径
+      url = images.imageUrl.replace(imageBaseUrl[0].configContent, ''),
       // 删除图床文件
-      service[imageStorage].delete(url);
-      return result;
+      res = await service[imageStorage].delete(url);
+    if (res) {
+      return await images.destroy();
     }
     ctx.throw(500, [999, '删除失败',]);
   }
