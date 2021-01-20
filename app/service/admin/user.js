@@ -14,7 +14,7 @@ class UserService extends Service {
         'order': [['userRegistTime', 'desc',],],
       });
     return {
-      'total': list.count,
+      'total': !list.count ? 0 : list.count,
       'list': list.rows,
     };
   }

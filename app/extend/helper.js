@@ -94,4 +94,9 @@ module.exports = {
     }
     return r;
   },
+
+  cover() {
+    const i = parseInt(Math.random() * 31, 10);
+    return 'image-base-url/blog/cover/' + i + '.jpg';
+  },
 };

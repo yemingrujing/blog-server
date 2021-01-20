@@ -98,4 +98,10 @@ module.exports = app => {
 
   // 图片上传
   router.post('/api/uploads/images', jwt, controller.upload.images);
+
+  /**
+   ============================================================================
+   */
+  router.post('/web/list', controller.web.web.search);
+  router.get('/web/info', controller.web.web.info);
 };

@@ -60,13 +60,20 @@ module.exports = appInfo => {
     'middleware': [
       'errorHandler',
       'authority',
+      'firbiddenIp',
     ],
     'jwt': {
       'secret': '123456',
     },
     'errorHandler': {
       'enable': true,
+      'match': '/',
+    },
+    'authority': {
       'match': '/api',
+    },
+    'firbiddenIp': {
+      'firbiddenIps': [], // 这里的ip是客户端ip
     },
     'sequelize': {
       'dialect': 'mysql',
