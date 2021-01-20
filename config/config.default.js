@@ -58,9 +58,9 @@ module.exports = appInfo => {
     },
     // add your middleware config here
     'middleware': [
-      'errorHandler',
-      'authority',
       'firbiddenIp',
+      'authority',
+      'errorHandler',
     ],
     'jwt': {
       'secret': '123456',
