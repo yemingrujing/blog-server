@@ -104,4 +104,5 @@ module.exports = app => {
    */
   router.post('/web/list', controller.web.web.search);
   router.get('/web/info', controller.web.web.info);
+  router.post('/web/blog_search', controller.web.web.blogSearch);
 };

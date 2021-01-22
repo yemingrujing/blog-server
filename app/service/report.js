@@ -12,7 +12,7 @@ class ReportService extends Service {
       statistics = await ctx.model.Statistics.count(),
       visitors = await ctx.model.SystemConfig.findAll({
         'where': {'signKey': 'visitors',},
-        'attribute': ['configContent',],
+        'attributes': ['configContent',],
       });
     return {
       images,
@@ -54,7 +54,7 @@ class ReportService extends Service {
   async category() {
     const {ctx,} = this,
       list = await ctx.model.Statistics.findAll({
-        'attribute': ['browserName', 'cityName',],
+        'attributes': ['browserName', 'cityName',],
       });
     return this.itemd(list);
   }

@@ -38,22 +38,23 @@ class WebService extends Service {
       '\tLIMIT $page,\n' +
       '\t$limit', {'bind': bind, 'type': QueryTypes.SELECT,}),
       total = await ctx.model.query('SELECT\n' +
-        '\tcount( a.id )\n' +
+        '\tcount( temp.id ) AS count \n' +
         'FROM\n' +
-        '\tarticles a\n' +
-        '\tLEFT JOIN artitle_category ac ON ac.artId = a.id\n' +
-        '\tLEFT JOIN category c ON c.id = ac.categoryId\n' +
-        '\tLEFT JOIN artitle_tag ta ON ta.artId = a.id\n' +
-        '\tLEFT JOIN tag t ON c.id = ta.tagId \n' +
-        'WHERE\n' +
-        '\ta.`status` = 1 \n' +
+        '\t(\n' +
+        '\tSELECT\n' +
+        '\t\ta.id \n' +
+        '\tFROM\n' +
+        '\t\tarticles a\n' +
+        '\t\tLEFT JOIN artitle_category ac ON ac.artId = a.id\n' +
+        '\t\tLEFT JOIN category c ON c.id = ac.categoryId\n' +
+        '\t\tLEFT JOIN artitle_tag ta ON ta.artId = a.id\n' +
+        '\t\tLEFT JOIN tag t ON c.id = ta.tagId \n' +
+        '\tWHERE\n' +
+        '\t\ta.`status` = 1 \n' +
         strList +
-        'GROUP BY\n' +
+        '\tGROUP BY\n' +
         '\ta.id \n' +
-        'ORDER BY\n' +
-        '\ta.createTime DESC \n' +
-        '\tLIMIT $page,\n' +
-        '\t$limit', {'bind': bind, 'type': QueryTypes.SELECT,});
+        '\t) temp', {'bind': bind, 'type': QueryTypes.SELECT,});
     return {
       'total': total[0].count,
       'list': list,
@@ -72,26 +73,36 @@ class WebService extends Service {
         '\tINNER JOIN category c ON ac.categoryId = c.id\n' +
         '\tINNER JOIN articles a ON ac.artId = a.id', {'type': QueryTypes.SELECT,}),
       articles = await ctx.model.Articles.findAll({
-        'attribute': ['id', 'articleTitle', 'updateTime', 'cover',],
-        'order': [['updateTime', 'desc',],],
+        'attributes': ['id', 'articleTitle', 'updateTime', 'cover',],
         'where': {
           'status': 1,
         },
+        'order': [['updateTime', 'desc',],],
       }),
       notice = await ctx.model.SystemConfig.findAll({
-        'attribute': ['configContent',],
+        'attributes': ['configContent',],
         'where': {
           'signKey': 'notice',
         },
       }),
       tags = await ctx.model.Tag.findAll({
-        'attribute': ['id', 'tagName',],
+        'attributes': ['id', 'tagName',],
       }),
       poems = await ctx.model.Poem.findAll({
-        'attribute': ['content', 'author',],
+        'attributes': ['content', 'author',],
       });
     return await service.api.web.homeData(category, articles, tags, poems, notice[0].configContent);
   }
+
+  async blogSearch(query) {
+    const {ctx,} = this;
+    return await ctx.model.Articles.findAll({
+      'attributes': ['id', ['articleTitle', 'title',],],
+      'where': query,
+      'order': [['updateTime', 'desc',],],
+    });
+  }
+
 }
 
 module.exports = WebService;
