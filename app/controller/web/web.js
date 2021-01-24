@@ -30,6 +30,24 @@ class WebController extends Controller {
     const result = await service.web.web.blogSearch(query);
     this.success(result, '查询');
   }
+
+  async timeLine() {
+    const {service,} = this,
+      result = await service.web.web.timeLine();
+    this.success(result, '查询');
+  }
+
+  async gallery() {
+    const {service,} = this,
+      result = await service.web.web.gallery();
+    this.success(result, '查询');
+  }
+
+  async detail() {
+    const {ctx, service,} = this,
+      result = await service.web.web.gallery(ctx.request.body.id);
+    this.success(result, '查询');
+  }
 }
 
 module.exports = WebController;

@@ -3,6 +3,8 @@
 const moment = require('moment');
 const uuidV1 = require('uuid/v1');
 const crypto = require('crypto');
+const axios = require('axios');
+const iconv = require('iconv-lite');
 
 module.exports = {
 
@@ -99,5 +101,13 @@ module.exports = {
     const i = parseInt(Math.random() * 31, 10);
     this.ctx.logger.info('i：' + i);
     return 'image-base-url/blog/cover/' + i + '.jpg';
+  },
+
+  getRegion(ip) { // 获取ip归属地
+    const res = axios.get(`http://whois.pconline.com.cn/ipJson.jsp?ip=${ip}&json=true`, { 'responseType': 'arraybuffer', }),
+      str = iconv.decode(Buffer.from(res.data), 'gb2312'), // arraybuffer解码
+      html = iconv.encode(str, 'utf8').toString(), // 转字符串
+      reg = /\{.*?\}/gi; // 截取json
+    return JSON.parse(html.match(reg)[0]);
   },
 };

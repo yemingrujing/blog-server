@@ -42,6 +42,7 @@ class CommentsService extends Service {
   async add(req) {
     const {ctx,} = this,
       createTime = await ctx.helper.getNowTime(),
+      status = 0,
       {author, articleId, email, nickName, commentContent, parentId, systemName, browserName,} = req;
     if (!commentContent) {
       ctx.throw(500, [999, '评论内容不能为空',]);
@@ -63,6 +64,7 @@ class CommentsService extends Service {
       parentNickName,
       systemName,
       browserName,
+      status,
       createTime,
     });
     if (!comments) {
@@ -81,7 +83,16 @@ class CommentsService extends Service {
     if (!comments) {
       ctx.throw(500, [999, '评论不存在',]);
     }
-    return await comments.update({status,});
+    const res = await comments.update({status,});
+    if (res) {
+      await ctx.model.Comments.update({
+        'where': {
+          'parentId': id,
+        },
+      });
+      return res;
+    }
+    ctx.throw(500, [999, '发布失败',]);
   }
 
   async delete(id) {

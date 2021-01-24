@@ -19,10 +19,21 @@ class WebService extends Service {
       o.count = res[i];
       categories.push(o);
     }
-    let poem = poems[parseInt(Math.random() * (poems.length - 1), 10)];
+    let poem = poems[Math.random() * (poems.length - 1)];
     poem = poem.content + ' _by_ ' + poem.author;
     const fullPage = this.ctx.helper.cover();
     return {'category': categories, articles, tags, fullPage, poem, notice,};
+  }
+
+  async comment() {
+    const {ctx,} = this,
+      param = {...ctx.request.body,},
+      device = JSON.parse(ctx.request.header['user-agent']),
+      Browser = device.getBrowser(),
+      Os = device.getOS();
+    param.browserName = Browser.name + ' ' + Browser.version;
+    param.systemName = Os.name + ' ' + Os.version;
+    return param;
   }
 }
 
