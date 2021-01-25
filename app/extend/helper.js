@@ -98,8 +98,7 @@ module.exports = {
   },
 
   cover() {
-    const i = parseInt(Math.random() * 31, 10);
-    this.ctx.logger.info('i：' + i);
+    const i = Math.random() * 31;
     return 'image-base-url/blog/cover/' + i + '.jpg';
   },
 

@@ -100,9 +100,14 @@ module.exports = app => {
   router.post('/api/uploads/images', jwt, controller.upload.images);
 
   /**
-   ============================================================================
+   * ================================================== web ==================================================
    */
   router.post('/web/list', controller.web.web.search);
   router.get('/web/info', controller.web.web.info);
+  router.post('/web/timeLine', controller.web.web.timeLine);
+  router.post('/web/gallery', controller.web.web.gallery);
+  router.post('/web/statistics', controller.web.web.statistics);
+  router.post('/web/detail', controller.web.web.detail);
   router.post('/web/blog_search', controller.web.web.blogSearch);
+  router.post('/web/comment', controller.web.web.comment);
 };

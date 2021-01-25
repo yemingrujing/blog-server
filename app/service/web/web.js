@@ -123,9 +123,22 @@ class WebService extends Service {
   }
 
   async statistics() {
-    const {ctx, service,} = this;
+    const {ctx, service,} = this,
+      {QueryTypes,} = require('sequelize');
+    await service.api.web.statistics();
+    const total = await ctx.model.Statistics.count(),
+      todayQuery = await ctx.model.query('select count(id) from statistics where TO_DAYS(now())=TO_DAYS(create_time)', {'type': QueryTypes.SELECT,}),
+      today = todayQuery[0]['count(id)'],
+      visitors = await ctx.model.SystemConfig.findAll({
+        'attributes': ['configContent',],
+        'where': {'signKey': 'visitors',},
+      });
+    return {
+      'total': Number(visitors[0].configContent),
+      'visitors': total,
+      today,
+    };
   }
-
 
   async detail(id) {
     const {ctx,} = this;
