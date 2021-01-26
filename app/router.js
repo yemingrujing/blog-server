@@ -104,7 +104,7 @@ module.exports = app => {
    */
   router.post('/web/list', controller.web.web.search);
   router.get('/web/info', controller.web.web.info);
-  router.post('/web/timeLine', controller.web.web.timeLine);
+  router.get('/web/timeLine', controller.web.web.timeLine);
   router.post('/web/gallery', controller.web.web.gallery);
   router.get('/web/statistics', controller.web.web.statistics);
   router.post('/web/detail', controller.web.web.detail);

@@ -133,6 +133,7 @@ class WebService extends Service {
         'attributes': ['configContent',],
         'where': {'signKey': 'visitors',},
       });
+    ctx.logger.info([today, visitors[0].configContent,total,]);
     return {
       'total': Number(visitors[0].configContent),
       'visitors': total,
