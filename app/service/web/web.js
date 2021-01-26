@@ -127,7 +127,7 @@ class WebService extends Service {
       {QueryTypes,} = require('sequelize');
     await service.api.web.statistics();
     const total = await ctx.model.Statistics.count(),
-      todayQuery = await ctx.model.query('select count(id) from statistics where TO_DAYS(now())=TO_DAYS(create_time)', {'type': QueryTypes.SELECT,}),
+      todayQuery = await ctx.model.query('select count(id) from statistics where TO_DAYS(now())=TO_DAYS(createTime)', {'type': QueryTypes.SELECT,}),
       today = todayQuery[0]['count(id)'],
       visitors = await ctx.model.SystemConfig.findAll({
         'attributes': ['configContent',],
@@ -153,7 +153,7 @@ class WebService extends Service {
         '\tart.articleDes AS articleDes,\n' +
         '\tc.categoryName AS categoryName,\n' +
         '\tart.articleViews AS readed,\n' +
-        '\tart.keywords AS keywrds,\n' +
+        '\tart.keywords AS keywords,\n' +
         '\tGROUP_CONCAT( t.tagName SEPARATOR \' \' ) AS tagName \n' +
         'FROM\n' +
         '\tarticles art\n' +
@@ -201,7 +201,7 @@ class WebService extends Service {
       '\tAND c.`status` = 1', {'bind': {'articleId': id,}, 'type': QueryTypes.SELECT,});
     result.cover = await ctx.helper.cover();
     result.id = id;
-    await ctx.model.update('UPDATE articles \n' +
+    await ctx.model.query('UPDATE articles \n' +
       'SET articleViews = IFNULL( articleViews, 0 ) + 1 \n' +
       'WHERE\n' +
       '\tid = $id', {'bind': {id,}, 'type': QueryTypes.UPDATE,});

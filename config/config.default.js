@@ -79,8 +79,8 @@ module.exports = appInfo => {
       'dialect': 'mysql',
       'database': 'db_blog', //数据库名
       'host': '',
-      'port': '3306',
-      'username': '', //账号
+      'port': '',
+      'username': 'hive', //账号
       'password': '', //密码
       'define': { // model的全局配置
         'timestamps': false, // 添加create,update,delete时间戳
@@ -138,8 +138,9 @@ module.exports = appInfo => {
     },
     'multipart': {
       'mode': 'file',
+      'fileExtensions': ['.ico',],
     },
-    'imageType': ['png', 'jpg', 'jpeg', 'gif',],
+    'imageType': ['png', 'jpg', 'jpeg', 'gif', 'x-icon',],
     'github': {
       'reqBaseUrl': 'http://api.github.com/repos/yemingrujing/Drawing_Images/contents',
       'imgBaseUrl': 'https://raw.githubusercontent.com/yemingrujing/Drawing_Images/master/',

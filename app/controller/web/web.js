@@ -45,8 +45,20 @@ class WebController extends Controller {
 
   async detail() {
     const {ctx, service,} = this,
-      result = await service.web.web.gallery(ctx.request.body.id);
+      result = await service.web.web.detail(ctx.request.body.id);
     this.success(result, '查询');
+  }
+
+  async statistics() {
+    const {service,} = this,
+      result = await service.web.web.statistics();
+    this.success(result, '查询');
+  }
+
+  async comment() {
+    const {service,} = this,
+      result = await service.web.web.comment();
+    this.success(result, '评论');
   }
 }
 

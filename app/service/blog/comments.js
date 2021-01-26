@@ -47,11 +47,11 @@ class CommentsService extends Service {
     if (!commentContent) {
       ctx.throw(500, [999, '评论内容不能为空',]);
     }
-    let parentNickName;
-    if (parentId && parentId > 0) {
-      const pComments = await ctx.model.Comments.findByPk(parentId);
-      if (pComments) {
-        parentNickName = pComments.nickName;
+    let {parentNickName,} = req;
+    if (!parentNickName) {
+      if (parentId && parentId > 0) {
+        const pComments = await ctx.model.Comments.findByPk(parentId);
+        parentNickName = pComments ? (pComments.nickName || '无名氏') : '作者';
       }
     }
     const comments = await ctx.model.Comments.create({
