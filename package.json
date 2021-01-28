@@ -38,7 +38,7 @@
   "scripts": {
     "start": "egg-scripts start --daemon --title=egg-server-diary",
     "start-pro": "egg-scripts start --daemon --title=egg-server-diary --ignore-stderr",
-    "stop": "egg-scripts stop --title=egg-server-blog-server",
+    "stop": "egg-scripts stop --title=egg-server-diary",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",

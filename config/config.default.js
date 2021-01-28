@@ -47,6 +47,12 @@ module.exports = appInfo => {
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1608695222703_9411';
+  config.cluster = {
+    'listen': {
+      'port': 7001,
+      'hostname': '0.0.0.0',
+    },
+  };
 
   // add your user config here
   const userConfig = {
