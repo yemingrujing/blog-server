@@ -47,6 +47,7 @@ module.exports = appInfo => {
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1608695222703_9411';
+  // 启动配置项
   config.cluster = {
     'listen': {
       'port': 7001,
