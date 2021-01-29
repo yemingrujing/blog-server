@@ -51,7 +51,7 @@ module.exports = appInfo => {
   config.cluster = {
     'listen': {
       'port': 7001,
-      'hostname': '0.0.0.0',
+      'hostname': '127.0.0.1',
     },
   };
 
@@ -87,7 +87,7 @@ module.exports = appInfo => {
       'database': 'db_blog', //数据库名
       'host': '',
       'port': '',
-      'username': 'hive', //账号
+      'username': '', //账号
       'password': '', //密码
       'define': { // model的全局配置
         'timestamps': false, // 添加create,update,delete时间戳
