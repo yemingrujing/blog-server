@@ -51,7 +51,7 @@ module.exports = appInfo => {
   config.cluster = {
     'listen': {
       'port': 7001,
-      'hostname': '0.0.0.0',
+      'hostname': '127.0.0.1',
     },
   };
 
@@ -86,7 +86,7 @@ module.exports = appInfo => {
       'dialect': 'mysql',
       'database': 'db_blog', //数据库名
       'host': '',
-      'port': '',
+      'port': '3306',
       'username': '', //账号
       'password': '', //密码
       'define': { // model的全局配置
